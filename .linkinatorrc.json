@@ -1,0 +1,15 @@
+{
+  "timeout": 10000,
+  "retry": true,
+  "retryErrors": true,
+  "retryErrorsCount": 3,
+  "retryErrorsJitter": 500,
+  "skip": [
+    "https://github.com/*",
+    "http://localhost*",
+    "https://groupme.com/*",
+    "https://www.linkedin.com/*",
+    "mailto:*",
+    "tel:*"
+  ]
+}

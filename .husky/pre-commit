@@ -1,0 +1,14 @@
+#!/bin/sh
+set -e
+
+# Format check on staged files
+STAGED=$(git diff --cached --name-only --diff-filter=ACMR | grep -E '\.(ts|tsx|js|jsx|json|css|md)$' | tr '\n' ' ')
+if [ -n "$STAGED" ]; then
+  npx prettier --check $STAGED
+fi
+
+# Lint staged JS/TS files
+STAGED_CODE=$(git diff --cached --name-only --diff-filter=ACMR | grep -E '\.(ts|tsx|js|jsx)$' | tr '\n' ' ')
+if [ -n "$STAGED_CODE" ]; then
+  npx eslint $STAGED_CODE
+fi

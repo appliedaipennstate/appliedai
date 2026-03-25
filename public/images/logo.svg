@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 140" fill="none">
+  <defs>
+    <!-- Subtle gradient for depth on text -->
+    <linearGradient id="textGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1E407C"/>
+      <stop offset="100%" stop-color="#001E44"/>
+    </linearGradient>
+    <!-- Accent bar gradient -->
+    <linearGradient id="barGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#1E407C"/>
+      <stop offset="60%" stop-color="#009CDE"/>
+      <stop offset="100%" stop-color="#96BEE6"/>
+    </linearGradient>
+    <!-- Subtle shadow filter -->
+    <filter id="textShadow" x="-2%" y="-2%" width="104%" height="108%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#001E44" flood-opacity="0.15"/>
+    </filter>
+  </defs>
+
+  <!-- "Applied AI" text with gradient fill and subtle shadow -->
+  <text
+    x="240"
+    y="78"
+    text-anchor="middle"
+    font-family="'Inter', 'Helvetica Neue', Arial, sans-serif"
+    font-weight="800"
+    font-size="82"
+    letter-spacing="-2"
+    fill="url(#textGrad)"
+    filter="url(#textShadow)"
+  >Applied AI</text>
+
+  <!-- Gradient accent bar -->
+  <rect x="60" y="100" width="360" height="5" rx="2.5" fill="url(#barGrad)"/>
+
+  <!-- Subtle shine line across text for 3D feel -->
+  <rect x="60" y="30" width="360" height="1" rx="0.5" fill="white" opacity="0.12"/>
+</svg>

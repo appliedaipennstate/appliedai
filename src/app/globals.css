@@ -1,0 +1,60 @@
+@import 'tailwindcss';
+
+/* Penn State brand tokens -- Applied AI Club */
+@theme {
+  --color-*: initial;
+
+  /* Primary brand */
+  --color-navy: #001e44;
+  --color-beaver-blue: #1e407c;
+  --color-pugh-blue: #96bee6;
+  --color-white: #ffffff;
+  --color-pa-sky: #009cde;
+
+  /* Functional */
+  --color-bg: #ffffff;
+  --color-text: #1a1f2e;
+  --color-text-muted: #4b5563;
+  --color-surface: #f3f4f6;
+  --color-surface-alt: #eef3fa;
+  --color-border: #e2e5ea;
+
+  /* Semantic */
+  --color-link: #1e407c;
+  --color-link-hover: #009cde;
+  --color-success: #2e7d32;
+  --color-warning: #f57c00;
+  --color-error: #c62828;
+
+  /* Typography */
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-serif: 'Roboto Slab', 'Georgia', 'Times New Roman', serif;
+  --font-display: 'Roboto Slab', 'Georgia', serif;
+
+  /* Spacing */
+  --spacing: 4px;
+
+  /* Border radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+}
+
+/* Smooth transitions */
+* {
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Accessibility: screen reader only */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}

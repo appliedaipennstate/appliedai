@@ -1,0 +1,115 @@
+name: CI - Build and Test
+
+on:
+  # Runs on all pull requests
+  pull_request:
+    branches: ['main']
+
+  # Runs on pushes to main (before deploy)
+  push:
+    branches: ['main']
+
+  # Allows manual trigger from Actions tab
+  workflow_dispatch:
+
+# Cancel in-progress CI runs for the same PR/branch
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-unit:
+    name: Build + Unit
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check formatting
+        run: npm run format:check
+
+      - name: Run linting
+        run: npm run lint
+
+      - name: Run unit tests
+        run: npm test
+        env:
+          CI: true
+
+      - name: Build Next.js site
+        run: npm run build
+        # Note: Do NOT set NEXT_PUBLIC_BASE_PATH here
+        # The basePath is only needed for actual GitHub Pages deployment (in deploy.yml)
+        # E2E tests need to run against a build without basePath since the test server
+        # (serve -s out) doesn't understand basePath routing
+
+      - name: Upload build output
+        uses: actions/upload-artifact@v6
+        with:
+          name: build-output
+          path: |
+            .next/
+            out/
+          retention-days: 7
+
+  e2e:
+    name: E2E (shard ${{ matrix.shard }}/4)
+    runs-on: ubuntu-latest
+    needs: build-and-unit
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Download build output
+        uses: actions/download-artifact@v6
+        with:
+          name: build-output
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('package-lock.json') }}
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Run E2E tests (sharded)
+        run: npm run test:e2e -- --shard=${{ matrix.shard }}/4
+        env:
+          CI: true
+
+      - name: Upload Playwright report (on failure)
+        if: failure()
+        uses: actions/upload-artifact@v6
+        with:
+          name: playwright-report-shard-${{ matrix.shard }}
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7

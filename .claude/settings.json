@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run *)",
+      "Bash(npx next *)",
+      "Bash(npx playwright *)",
+      "Bash(npx serve *)",
+      "Bash(git *)",
+      "Bash(node scripts/*)",
+      "Bash(ls *)",
+      "Bash(mkdir *)"
+    ],
+    "deny": ["Bash(rm -rf *)", "Bash(curl * | sh)", "Bash(wget * | sh)"]
+  }
+}
