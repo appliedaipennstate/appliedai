@@ -1,6 +1,13 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { ChevronDown, ArrowRight, ExternalLink } from 'lucide-react'
+import {
+  ChevronDown,
+  ArrowRight,
+  ExternalLink,
+  Calendar,
+  FlaskConical,
+  Compass,
+} from 'lucide-react'
 import { assetPath } from '@/lib/assetPath'
 import { FadeIn } from '@/components/ui/FadeIn'
 import { StaggerGrid, StaggerItem } from '@/components/ui/StaggerGrid'
@@ -11,16 +18,22 @@ import { MailingListForm } from '@/components/MailingListForm'
 import { pillars } from '@/data/pillars'
 import { team, teamSemester } from '@/data/team'
 
+const pillarIcons = {
+  calendar: Calendar,
+  flask: FlaskConical,
+  compass: Compass,
+}
+
 export default function Home() {
   return (
     <>
       {/* ─── HERO ─── */}
-      <section className="relative overflow-hidden py-40 md:py-48 lg:py-56">
-        {/* Ambient glow -- very subtle, positioned at edges not center */}
+      <section className="relative overflow-hidden py-36 md:py-44 lg:py-52">
+        {/* Ambient edge glows */}
         <div className="absolute top-[-15%] right-[-8%] w-[500px] h-[500px] rounded-full bg-pugh-blue/[0.04] blur-[120px]" />
         <div className="absolute bottom-[-10%] left-[-5%] w-[400px] h-[400px] rounded-full bg-pa-sky/[0.03] blur-[100px]" />
 
-        {/* Subtle dot grid texture */}
+        {/* Dot grid */}
         <div
           className="absolute inset-0 opacity-[0.03]"
           style={{
@@ -72,7 +85,7 @@ export default function Home() {
       </section>
 
       {/* ─── MISSION ─── */}
-      <section className="py-28 md:py-36">
+      <section className="py-24 md:py-32">
         <div className="max-w-6xl mx-auto px-6">
           <FadeIn>
             <div className="max-w-3xl">
@@ -100,8 +113,7 @@ export default function Home() {
       </section>
 
       {/* ─── WHAT WE DO ─── */}
-      <section id="what-we-do" className="py-28 md:py-36 bg-surface-alt relative overflow-hidden">
-        {/* Subtle background texture */}
+      <section id="what-we-do" className="py-24 md:py-32 bg-surface-alt relative overflow-hidden">
         <div className="absolute top-0 right-0 w-[400px] h-[400px] rounded-full bg-pugh-blue/[0.04] blur-[100px]" />
 
         <div className="relative max-w-6xl mx-auto px-6">
@@ -118,42 +130,48 @@ export default function Home() {
           </FadeIn>
 
           <StaggerGrid className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {pillars.map((pillar) => (
-              <StaggerItem key={pillar.title}>
-                {pillar.link ? (
-                  <Link href={pillar.link} className="block h-full">
-                    <AnimatedCard
-                      className={`bg-white rounded-2xl border-t-[3px] ${pillar.accent} border border-border px-8 py-10 h-full cursor-pointer`}
-                    >
-                      <h3 className="font-display text-navy text-lg font-semibold mb-4">
-                        {pillar.title}
-                      </h3>
-                      <p className="text-text-muted text-sm leading-relaxed">
-                        {pillar.description}
-                      </p>
-                      <p className="mt-8 text-beaver-blue text-xs uppercase tracking-wider font-semibold flex items-center gap-1.5">
-                        Explore tools <ArrowRight size={12} />
-                      </p>
-                    </AnimatedCard>
-                  </Link>
-                ) : (
-                  <AnimatedCard
-                    className={`bg-white rounded-2xl border-t-[3px] ${pillar.accent} border border-border px-8 py-10 h-full`}
+            {pillars.map((pillar) => {
+              const Icon = pillarIcons[pillar.icon]
+              const card = (
+                <AnimatedCard
+                  className={`bg-white rounded-2xl border-t-[3px] ${pillar.accent} border border-border px-8 py-10 h-full shadow-sm ${pillar.link ? 'cursor-pointer' : ''}`}
+                >
+                  {/* Icon */}
+                  <div
+                    className={`w-12 h-12 rounded-xl ${pillar.iconBg} flex items-center justify-center mb-6`}
                   >
-                    <h3 className="font-display text-navy text-lg font-semibold mb-4">
-                      {pillar.title}
-                    </h3>
-                    <p className="text-text-muted text-sm leading-relaxed">{pillar.description}</p>
-                  </AnimatedCard>
-                )}
-              </StaggerItem>
-            ))}
+                    <Icon size={22} className="text-navy" />
+                  </div>
+                  <h3 className="font-display text-navy text-lg font-semibold mb-4">
+                    {pillar.title}
+                  </h3>
+                  <p className="text-text-muted text-sm leading-relaxed">{pillar.description}</p>
+                  {pillar.link && (
+                    <p className="mt-8 text-beaver-blue text-xs uppercase tracking-wider font-semibold flex items-center gap-1.5">
+                      Explore tools <ArrowRight size={12} />
+                    </p>
+                  )}
+                </AnimatedCard>
+              )
+
+              return (
+                <StaggerItem key={pillar.title}>
+                  {pillar.link ? (
+                    <Link href={pillar.link} className="block h-full">
+                      {card}
+                    </Link>
+                  ) : (
+                    <div className="h-full">{card}</div>
+                  )}
+                </StaggerItem>
+              )
+            })}
           </StaggerGrid>
         </div>
       </section>
 
       {/* ─── LABS ─── */}
-      <section id="labs" className="py-28 md:py-36 relative overflow-hidden">
+      <section id="labs" className="py-24 md:py-32 relative overflow-hidden">
         <div className="absolute bottom-0 left-0 w-[350px] h-[350px] rounded-full bg-pa-sky/[0.03] blur-[80px]" />
 
         <div className="relative max-w-6xl mx-auto px-6">
@@ -188,12 +206,12 @@ export default function Home() {
             </SlideIn>
 
             <SlideIn direction="right">
-              <AnimatedCard className="bg-surface-alt rounded-2xl p-8 md:p-10 border border-border">
-                <p className="text-xs uppercase tracking-widest text-beaver-blue/60 font-semibold mb-5">
+              <AnimatedCard className="bg-gradient-to-br from-navy to-beaver-blue rounded-2xl p-8 md:p-10 text-white shadow-xl shadow-navy/10">
+                <p className="text-xs uppercase tracking-widest text-pugh-blue font-semibold mb-5">
                   First project
                 </p>
-                <p className="font-display text-navy text-xl font-semibold mb-3">Student AI Hub</p>
-                <p className="text-text-muted text-sm leading-relaxed mb-8">
+                <p className="font-display text-2xl font-semibold mb-3">Student AI Hub</p>
+                <p className="text-white/70 text-sm leading-relaxed mb-8">
                   A student-built resource covering AI in business, school, and professional life.
                   Ten interactive modules for every Smeal major, built from 22 foundational sources.
                 </p>
@@ -201,7 +219,7 @@ export default function Home() {
                   {['Next.js', 'React', 'Tailwind', 'MDX', 'GitHub Pages'].map((tag) => (
                     <span
                       key={tag}
-                      className="text-xs bg-white px-3 py-1.5 rounded-full text-text-muted border border-border font-medium"
+                      className="text-xs bg-white/10 px-3 py-1.5 rounded-full text-white/80 border border-white/10 font-medium"
                     >
                       {tag}
                     </span>
@@ -214,42 +232,44 @@ export default function Home() {
       </section>
 
       {/* ─── TEAM ─── */}
-      <section id="team" className="py-28 md:py-36 bg-surface-alt relative overflow-hidden">
+      <section id="team" className="py-24 md:py-32 bg-surface-alt relative overflow-hidden">
         <div className="absolute top-[20%] left-[5%] w-[300px] h-[300px] rounded-full bg-pugh-blue/[0.03] blur-[80px]" />
 
         <div className="relative max-w-6xl mx-auto px-6">
           <FadeIn>
-            <p className="text-xs uppercase tracking-widest text-beaver-blue font-semibold mb-3">
-              Our Team
-            </p>
-            <h2
-              className="font-display text-navy font-bold leading-tight mb-4"
-              style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}
-            >
-              Meet the board
-            </h2>
-            <p className="text-text-muted mb-14 max-w-lg">
-              {teamSemester} executive board. If you have questions, ideas, or want to learn more
-              about the club, reach out.
-            </p>
+            <div className="text-center mb-14">
+              <p className="text-xs uppercase tracking-widest text-beaver-blue font-semibold mb-3">
+                Our Team
+              </p>
+              <h2
+                className="font-display text-navy font-bold leading-tight mb-4"
+                style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}
+              >
+                Meet the board
+              </h2>
+              <p className="text-text-muted max-w-lg mx-auto">
+                {teamSemester} executive board. If you have questions, ideas, or want to learn more
+                about the club, reach out.
+              </p>
+            </div>
           </FadeIn>
 
           <StaggerGrid className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {team.map((member) => (
               <StaggerItem key={member.name}>
                 <AnimatedCard className="bg-white rounded-2xl p-8 border border-border text-center">
-                  <div className="w-24 h-24 mx-auto mb-5 rounded-full overflow-hidden bg-navy/[0.06] ring-2 ring-border">
+                  <div className="w-28 h-28 mx-auto mb-6 rounded-full overflow-hidden bg-navy/[0.06] ring-2 ring-border ring-offset-2 ring-offset-white">
                     {member.photo ? (
                       <Image
                         src={assetPath(member.photo)}
                         alt={member.name}
-                        width={96}
-                        height={96}
+                        width={112}
+                        height={112}
                         className="w-full h-full object-cover"
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">
-                        <span className="font-display text-navy text-xl font-semibold">
+                        <span className="font-display text-navy text-2xl font-semibold">
                           {member.name
                             .split(' ')
                             .map((n) => n[0])
@@ -274,8 +294,7 @@ export default function Home() {
       </section>
 
       {/* ─── JOIN ─── */}
-      <section id="join" className="py-28 md:py-36 relative overflow-hidden">
-        {/* Background accent */}
+      <section id="join" className="py-24 md:py-32 relative overflow-hidden">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-pugh-blue/[0.04] blur-[100px]" />
 
         <div className="relative max-w-6xl mx-auto px-6">
