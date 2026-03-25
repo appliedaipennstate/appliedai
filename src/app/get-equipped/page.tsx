@@ -113,8 +113,9 @@ export default function GetEquippedPage() {
               </p>
               <p className="text-text-muted leading-relaxed">
                 This list will keep growing. We plan to build systems that keep students in the loop
-                on what they have access to as new tools become available. None of these are
-                affiliated with Applied AI. They are just resources worth knowing about.
+                on what they have access to as new tools become available. Getting set up with these
+                early gives you a real advantage when coursework, internships, and projects start
+                asking for these skills.
               </p>
             </div>
           </FadeIn>
