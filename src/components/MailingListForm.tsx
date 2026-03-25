@@ -22,22 +22,23 @@ export function MailingListForm() {
     setErrorMsg('')
 
     try {
-      const res = await fetch(endpoint || '', {
+      // Google Apps Script requires form-encoded data submitted via no-cors
+      // to avoid redirect issues. We can't read the response, so we assume
+      // success if the fetch doesn't throw.
+      const formData = new FormData()
+      formData.append('firstName', firstName)
+      formData.append('email', email)
+
+      await fetch(endpoint || '', {
         method: 'POST',
-        headers: { 'Content-Type': 'text/plain' },
-        body: JSON.stringify({ firstName, email }),
+        mode: 'no-cors',
+        body: formData,
       })
 
-      const data = await res.json()
-
-      if (data.success) {
-        setState('success')
-        setFirstName('')
-        setEmail('')
-      } else {
-        setState('error')
-        setErrorMsg(data.error || 'Something went wrong.')
-      }
+      // no-cors means we can't read the response, so assume success
+      setState('success')
+      setFirstName('')
+      setEmail('')
     } catch {
       setState('error')
       setErrorMsg('Something went wrong. Try again or email us at appliedaipsu@gmail.com.')
