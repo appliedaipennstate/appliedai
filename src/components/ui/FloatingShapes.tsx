@@ -118,6 +118,17 @@ function Scene() {
 }
 
 export function FloatingShapes() {
+  // Skip rendering if WebGL is not available (SSR, headless browsers, etc.)
+  if (typeof window === 'undefined') return null
+
+  try {
+    const canvas = document.createElement('canvas')
+    const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl')
+    if (!gl) return null
+  } catch {
+    return null
+  }
+
   return (
     <div className="absolute inset-0 pointer-events-auto">
       <Canvas
