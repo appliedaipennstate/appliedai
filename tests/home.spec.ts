@@ -7,13 +7,13 @@ test('home page loads with logo', async ({ page }) => {
 
 test('explore page loads', async ({ page }) => {
   await page.goto('/explore/')
-  await expect(page.locator('h1')).toContainText('essential AI tools')
+  await expect(page.locator('h1')).toContainText('Align yourself')
 })
 
-test('explore page is reachable', async ({ page }) => {
+test('explore page has tools', async ({ page }) => {
   await page.goto('/explore/')
-  await expect(page.locator('h1')).toContainText('essential AI tools')
-  await expect(page.locator('text=ChatGPT')).toBeVisible()
+  await page.evaluate(() => window.scrollTo(0, 600))
+  await expect(page.locator('text=AI Assistants')).toBeVisible()
 })
 
 test('mailing list form renders', async ({ page }) => {
