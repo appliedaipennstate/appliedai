@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Applied AI Club -- Dashboard</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: #001e44;
+      color: #ffffff;
+      overflow-x: hidden;
+    }
+
+    #hero {
+      position: relative;
+      width: 100%;
+      height: 280px;
+      overflow: hidden;
+    }
+
+    #hero canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    #hero-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    #hero-overlay h1 {
+      font-family: 'Roboto Slab', Georgia, serif;
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.25rem;
+    }
+
+    #hero-overlay p {
+      font-size: 1rem;
+      opacity: 0.8;
+    }
+
+    .welcome-bar {
+      background: #1e407c;
+      padding: 1.25rem 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .welcome-bar .name {
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .welcome-bar .role {
+      background: rgba(150, 190, 230, 0.2);
+      padding: 0.2rem 0.75rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      color: #96bee6;
+    }
+
+    .welcome-bar .briefing {
+      width: 100%;
+      margin-top: 0.5rem;
+      font-size: 0.95rem;
+      opacity: 0.9;
+      line-height: 1.5;
+    }
+
+    .dashboard {
+      padding: 1.5rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.25rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: rgba(30, 64, 124, 0.3);
+      border: 1px solid rgba(150, 190, 230, 0.15);
+      border-radius: 12px;
+      padding: 1.5rem;
+      transition: border-color 0.2s;
+    }
+
+    .card:hover {
+      border-color: rgba(150, 190, 230, 0.4);
+    }
+
+    .card h2 {
+      font-family: 'Roboto Slab', Georgia, serif;
+      font-size: 1.1rem;
+      margin-bottom: 0.75rem;
+      color: #96bee6;
+    }
+
+    .card .value {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+
+    .card .label {
+      font-size: 0.85rem;
+      opacity: 0.6;
+    }
+
+    .card a {
+      color: #009cde;
+      text-decoration: none;
+    }
+
+    .card a:hover {
+      text-decoration: underline;
+    }
+
+    .card ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .card ul li {
+      padding: 0.5rem 0;
+      border-bottom: 1px solid rgba(150, 190, 230, 0.1);
+      font-size: 0.95rem;
+    }
+
+    .card ul li:last-child {
+      border-bottom: none;
+    }
+
+    .card.coming-soon {
+      opacity: 0.5;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 140px;
+    }
+
+    .card.coming-soon h2 {
+      color: rgba(150, 190, 230, 0.5);
+    }
+
+    .footer-bar {
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.75rem;
+      opacity: 0.4;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="hero">
+    <div id="hero-overlay">
+      <h1>Applied AI Club</h1>
+      <p>at Penn State</p>
+    </div>
+  </div>
+
+  <div class="welcome-bar" id="welcome">
+    <span class="name" id="member-name">Welcome</span>
+    <span class="role" id="member-role">Member</span>
+    <div class="briefing" id="member-briefing">
+      Open the Copilot chat and introduce yourself to get a personalized briefing.
+    </div>
+  </div>
+
+  <div class="dashboard" id="dashboard"></div>
+
+  <div class="footer-bar">
+    Dashboard data last updated: <span id="last-updated">--</span>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const memberName = params.get('name') || 'Welcome';
+    const memberRole = params.get('role') || 'Member';
+    const memberBriefing = params.get('briefing') || '';
+
+    document.getElementById('member-name').textContent = memberName;
+    document.getElementById('member-role').textContent = memberRole;
+    if (memberBriefing) {
+      document.getElementById('member-briefing').textContent = memberBriefing;
+    }
+
+    (function initHero() {
+      const container = document.getElementById('hero');
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(60, container.clientWidth / container.clientHeight, 0.1, 100);
+      camera.position.z = 30;
+
+      const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      renderer.setSize(container.clientWidth, container.clientHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      container.insertBefore(renderer.domElement, container.firstChild);
+
+      const count = 800;
+      const positions = new Float32Array(count * 3);
+      const colors = new Float32Array(count * 3);
+
+      const brandColors = [
+        [0.0, 0.118, 0.267],
+        [0.118, 0.251, 0.486],
+        [0.588, 0.745, 0.902],
+        [0.0, 0.612, 0.871],
+      ];
+
+      for (let i = 0; i < count; i++) {
+        positions[i * 3] = (Math.random() - 0.5) * 60;
+        positions[i * 3 + 1] = (Math.random() - 0.5) * 30;
+        positions[i * 3 + 2] = (Math.random() - 0.5) * 40;
+
+        const c = brandColors[Math.floor(Math.random() * brandColors.length)];
+        colors[i * 3] = c[0];
+        colors[i * 3 + 1] = c[1];
+        colors[i * 3 + 2] = c[2];
+      }
+
+      const geometry = new THREE.BufferGeometry();
+      geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+      geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+      const material = new THREE.PointsMaterial({
+        size: 0.15,
+        vertexColors: true,
+        transparent: true,
+        opacity: 0.8,
+        sizeAttenuation: true,
+      });
+
+      const points = new THREE.Points(geometry, material);
+      scene.add(points);
+
+      function animate() {
+        requestAnimationFrame(animate);
+        points.rotation.y += 0.001;
+        points.rotation.x += 0.0003;
+
+        const pos = geometry.attributes.position.array;
+        for (let i = 0; i < count; i++) {
+          pos[i * 3 + 1] += Math.sin(Date.now() * 0.001 + i) * 0.003;
+        }
+        geometry.attributes.position.needsUpdate = true;
+
+        renderer.render(scene, camera);
+      }
+      animate();
+
+      window.addEventListener('resize', function() {
+        camera.aspect = container.clientWidth / container.clientHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(container.clientWidth, container.clientHeight);
+      });
+    })();
+
+    fetch('data.json')
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        var dashboard = document.getElementById('dashboard');
+        document.getElementById('last-updated').textContent = data.last_updated;
+
+        dashboard.innerHTML += '<div class="card">' +
+          '<h2>Our Site</h2>' +
+          '<a href="' + data.site_url + '" target="_blank">' + data.site_display + '</a>' +
+          '<p style="margin-top:0.5rem;font-size:0.9rem;opacity:0.7">Live on GitHub Pages</p>' +
+          '</div>';
+
+        dashboard.innerHTML += '<div class="card">' +
+          '<h2>Mailing List</h2>' +
+          '<div class="value">' + data.mailing_list_count + '</div>' +
+          '<div class="label">' + data.mailing_list_note + '</div>' +
+          '</div>';
+
+        if (data.announcements && data.announcements.length > 0) {
+          var items = data.announcements.map(function(a) { return '<li>' + a + '</li>'; }).join('');
+          dashboard.innerHTML += '<div class="card">' +
+            '<h2>Announcements</h2>' +
+            '<ul>' + items + '</ul>' +
+            '</div>';
+        }
+
+        dashboard.innerHTML += '<div class="card coming-soon"><h2>Open Issues</h2><p>Coming soon</p></div>';
+        dashboard.innerHTML += '<div class="card coming-soon"><h2>Team Activity</h2><p>Coming soon</p></div>';
+        dashboard.innerHTML += '<div class="card coming-soon"><h2>Meeting Schedule</h2><p>Coming soon</p></div>';
+      })
+      .catch(function() {
+        document.getElementById('dashboard').innerHTML =
+          '<div class="card"><h2>Dashboard</h2><p>Could not load data.json. Run from a local server.</p></div>';
+      });
+  </script>
+
+</body>
+</html>
