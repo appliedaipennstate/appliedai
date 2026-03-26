@@ -1,0 +1,37 @@
+[
+  {
+    "name": "Andy Salvo",
+    "role": "Programming Lead",
+    "github": "andysalvo",
+    "email": "ajs10845@psu.edu",
+    "briefing": "Welcome back. You have full repo access. Check open issues and PRs for current work."
+  },
+  {
+    "name": "Ryan Einzig",
+    "role": "President",
+    "github": "",
+    "email": "rxe5177@psu.edu",
+    "briefing": "Welcome to the repo. Your first priority: we need to figure out a meeting date for the club. Coordinate with the exec board and find a time that works."
+  },
+  {
+    "name": "Evan Chappell",
+    "role": "Vice-President",
+    "github": "",
+    "email": "evc5667@psu.edu",
+    "briefing": "Welcome to the repo. Check with the President on current priorities."
+  },
+  {
+    "name": "Brody Bell",
+    "role": "Treasurer",
+    "github": "",
+    "email": "bkb5921@psu.edu",
+    "briefing": "Welcome to the repo. Check with the President on current priorities."
+  },
+  {
+    "name": "Chris Coyne",
+    "role": "Faculty Director",
+    "github": "",
+    "email": "",
+    "briefing": "Welcome, Professor Coyne. You have advisory oversight of this repository. The exec board handles day-to-day development."
+  }
+]
