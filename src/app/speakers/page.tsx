@@ -48,13 +48,13 @@ export default function SpeakersPage() {
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <a
-                href="#speak"
+                href="#signup"
                 className="inline-flex items-center gap-2 bg-white text-navy px-7 py-3.5 rounded-xl font-semibold text-sm hover:bg-white/90 transition-colors"
               >
                 Sign up to speak
               </a>
               <a
-                href="#speak"
+                href="#ask"
                 className="inline-flex items-center gap-2 border border-white/15 text-white/80 px-7 py-3.5 rounded-xl font-medium text-sm hover:bg-white/[0.06] transition-colors"
               >
                 Ask questions
@@ -244,7 +244,10 @@ export default function SpeakersPage() {
         <div className="max-w-5xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
             <FadeIn>
-              <div className="bg-white rounded-2xl border border-border p-8 md:p-10">
+              <div
+                id="signup"
+                className="bg-white rounded-2xl border border-border p-8 md:p-10 scroll-mt-24"
+              >
                 <h2 className="font-display text-lg font-bold text-navy mb-2 text-center">
                   Interested in speaking?
                 </h2>
@@ -256,7 +259,9 @@ export default function SpeakersPage() {
             </FadeIn>
 
             <FadeIn delay={0.15}>
-              <SpeakerChat />
+              <div id="ask" className="scroll-mt-24">
+                <SpeakerChat />
+              </div>
             </FadeIn>
           </div>
 
