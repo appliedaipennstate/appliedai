@@ -259,7 +259,10 @@ export default function SpeakersPage() {
             </FadeIn>
 
             <FadeIn delay={0.15} className="flex">
-              <div id="ask" className="scroll-mt-24 flex-1 flex flex-col overflow-hidden">
+              <div
+                id="ask"
+                className="scroll-mt-24 flex-1 flex flex-col min-h-[420px] lg:min-h-0 lg:overflow-hidden"
+              >
                 <SpeakerChat />
               </div>
             </FadeIn>
