@@ -5,7 +5,7 @@ import { PressableButton } from '@/components/ui/PressableButton'
 
 type FormState = 'idle' | 'submitting' | 'success' | 'error'
 
-export function MailingListForm() {
+export function MailingListFormLight() {
   const [state, setState] = useState<FormState>('idle')
   const [firstName, setFirstName] = useState('')
   const [email, setEmail] = useState('')
@@ -22,9 +22,6 @@ export function MailingListForm() {
     setErrorMsg('')
 
     try {
-      // Google Apps Script requires form-encoded data submitted via no-cors
-      // to avoid redirect issues. We can't read the response, so we assume
-      // success if the fetch doesn't throw.
       const formData = new FormData()
       formData.append('firstName', firstName)
       formData.append('email', email)
@@ -35,7 +32,6 @@ export function MailingListForm() {
         body: formData,
       })
 
-      // no-cors means we can't read the response, so assume success
       setState('success')
       setFirstName('')
       setEmail('')
@@ -48,7 +44,7 @@ export function MailingListForm() {
   if (state === 'success') {
     return (
       <div className="text-center py-8">
-        <p className="text-lg font-display font-semibold text-white">
+        <p className="text-lg font-display font-semibold text-navy">
           You&apos;re in. We&apos;ll be in touch.
         </p>
       </div>
@@ -56,14 +52,14 @@ export function MailingListForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-3 max-w-sm mx-auto">
       <input
         type="text"
         placeholder="First name"
         value={firstName}
         onChange={(e) => setFirstName(e.target.value)}
         required
-        className="flex-1 px-4 py-3.5 rounded-xl border border-white/10 bg-white/[0.06] text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-pugh-blue/30 focus:border-pugh-blue/40 transition-all text-sm"
+        className="px-5 py-3.5 rounded-xl border border-border bg-white text-text placeholder:text-text-muted/50 focus:outline-none focus:ring-2 focus:ring-beaver-blue/20 focus:border-beaver-blue/40 transition-all"
       />
       <input
         type="email"
@@ -71,13 +67,13 @@ export function MailingListForm() {
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         required
-        className="flex-1 px-4 py-3.5 rounded-xl border border-white/10 bg-white/[0.06] text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-pugh-blue/30 focus:border-pugh-blue/40 transition-all text-sm"
+        className="px-5 py-3.5 rounded-xl border border-border bg-white text-text placeholder:text-text-muted/50 focus:outline-none focus:ring-2 focus:ring-beaver-blue/20 focus:border-beaver-blue/40 transition-all"
       />
       <PressableButton
         type="submit"
-        className="px-6 py-3.5 bg-white text-navy rounded-xl font-semibold text-sm disabled:opacity-60 disabled:cursor-not-allowed shrink-0"
+        className="px-6 py-3.5 bg-beaver-blue text-white rounded-xl font-medium text-sm disabled:opacity-60 disabled:cursor-not-allowed"
       >
-        {state === 'submitting' ? 'Joining...' : 'Join'}
+        {state === 'submitting' ? 'Joining...' : 'Join the list'}
       </PressableButton>
       {state === 'error' && <p className="text-error text-sm">{errorMsg}</p>}
     </form>

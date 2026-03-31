@@ -18,21 +18,23 @@ export default function TeamPage() {
   return (
     <>
       {/* ─── HERO ─── */}
-      <section className="py-28 md:py-36 relative overflow-hidden">
-        <div className="absolute top-[-10%] left-[-5%] w-[400px] h-[400px] rounded-full bg-pugh-blue/[0.04] blur-[100px]" />
+      <section className="bg-navy relative overflow-hidden py-14 md:py-20">
+        <div className="absolute top-[20%] right-[-5%] w-[400px] h-[400px] rounded-full bg-beaver-blue/10 blur-[150px]" />
+        <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-beaver-blue via-pa-sky to-pugh-blue" />
+        <div className="absolute bottom-0 left-[10%] right-[10%] h-[80px] bg-gradient-to-r from-beaver-blue/15 via-pa-sky/10 to-pugh-blue/10 blur-[60px]" />
 
         <div className="relative max-w-6xl mx-auto px-6">
           <FadeIn>
-            <p className="text-xs uppercase tracking-widest text-beaver-blue font-semibold mb-3">
+            <p className="text-xs uppercase tracking-widest text-pugh-blue font-semibold mb-3">
               Our Team
             </p>
             <h1
-              className="font-display text-navy font-bold leading-tight mb-6"
+              className="font-display text-white font-bold leading-tight mb-6"
               style={{ fontSize: 'clamp(2.5rem, 5vw, 3.5rem)' }}
             >
               Meet the board
             </h1>
-            <p className="text-text-muted text-lg max-w-2xl leading-relaxed">
+            <p className="text-white/50 text-lg max-w-2xl leading-relaxed">
               {teamSemester} executive board. We are building something new and want more people
               involved.
             </p>
@@ -41,7 +43,7 @@ export default function TeamPage() {
       </section>
 
       {/* ─── TEAM GRID ─── */}
-      <section className="pb-20 md:pb-28">
+      <section className="pb-14 md:pb-20">
         <div className="max-w-6xl mx-auto px-6">
           <StaggerGrid className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {team.map((member) => (
@@ -83,15 +85,12 @@ export default function TeamPage() {
       </section>
 
       {/* ─── HOW TO JOIN ─── */}
-      <section className="py-20 md:py-28 bg-gradient-to-br from-navy to-beaver-blue text-white relative overflow-hidden">
-        <div
-          className="absolute inset-0 opacity-[0.04]"
-          style={{
-            backgroundImage: 'radial-gradient(circle, #ffffff 1px, transparent 1px)',
-            backgroundSize: '24px 24px',
-          }}
-        />
-        <div className="absolute top-[20%] right-[10%] w-[300px] h-[300px] rounded-full bg-pugh-blue/[0.1] blur-[80px]" />
+      <section className="bg-navy relative overflow-hidden py-14 md:py-20 text-white">
+        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-beaver-blue via-pa-sky to-pugh-blue" />
+        <div className="absolute top-0 left-[10%] right-[10%] h-[80px] bg-gradient-to-r from-beaver-blue/15 via-pa-sky/10 to-pugh-blue/10 blur-[60px]" />
+        <div className="absolute top-[20%] right-[-5%] w-[400px] h-[400px] rounded-full bg-beaver-blue/10 blur-[150px]" />
+        <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-beaver-blue via-pa-sky to-pugh-blue" />
+        <div className="absolute bottom-0 left-[10%] right-[10%] h-[80px] bg-gradient-to-r from-beaver-blue/15 via-pa-sky/10 to-pugh-blue/10 blur-[60px]" />
 
         <div className="relative max-w-6xl mx-auto px-6">
           <FadeIn>
@@ -184,7 +183,7 @@ export default function TeamPage() {
       </section>
 
       {/* ─── CONTACT ─── */}
-      <section className="py-20 md:py-28">
+      <section className="py-14 md:py-20">
         <div className="max-w-6xl mx-auto px-6 text-center">
           <FadeIn>
             <h2

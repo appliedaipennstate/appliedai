@@ -1,27 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import {
-  ExternalLink,
-  ArrowRight,
-  MessageSquare,
-  Brain,
-  Search,
-  Blocks,
-  HardDrive,
-  Code2,
-  Layers,
-  Terminal,
-  Sparkles,
-  BookOpen,
-  GraduationCap,
-  GitBranch,
-  Globe,
-  Wind,
-  Image,
-  AudioLines,
-  Music,
-  Paintbrush,
-} from 'lucide-react'
+import { ExternalLink, ArrowRight, MessageSquare, Search, Code2, Paintbrush } from 'lucide-react'
 import { FadeIn } from '@/components/ui/FadeIn'
 import { StaggerGrid, StaggerItem } from '@/components/ui/StaggerGrid'
 import { AnimatedCard } from '@/components/ui/AnimatedCard'
@@ -33,25 +12,25 @@ export const metadata: Metadata = {
   description: 'A list of essential AI tools worth knowing, organized for students at every level.',
 }
 
-const toolIcons: Record<string, typeof MessageSquare> = {
-  ChatGPT: MessageSquare,
-  Claude: Brain,
-  Gemini: Sparkles,
-  'GitHub Copilot': GitBranch,
-  Perplexity: Search,
-  NotebookLM: BookOpen,
-  Elicit: GraduationCap,
-  Openclaw: Blocks,
-  Ollama: HardDrive,
-  Cursor: Code2,
-  v0: Layers,
-  Codex: Terminal,
-  'Claude Code': Terminal,
-  Replit: Globe,
-  Windsurf: Wind,
-  Midjourney: Image,
-  ElevenLabs: AudioLines,
-  Suno: Music,
+const logoDomains: Record<string, string> = {
+  ChatGPT: 'chatgpt.com',
+  Claude: 'claude.ai',
+  Gemini: 'gemini.google.com',
+  'GitHub Copilot': 'github.com',
+  Perplexity: 'perplexity.ai',
+  NotebookLM: 'notebooklm.google.com',
+  Elicit: 'elicit.com',
+  Openclaw: 'openclaw.com',
+  Ollama: 'ollama.com',
+  Cursor: 'cursor.com',
+  v0: 'v0.dev',
+  Codex: 'openai.com',
+  'Claude Code': 'claude.ai',
+  Replit: 'replit.com',
+  Windsurf: 'windsurf.com',
+  Midjourney: 'midjourney.com',
+  ElevenLabs: 'elevenlabs.io',
+  Suno: 'suno.com',
 }
 
 export default function ExplorePage() {
@@ -65,28 +44,29 @@ export default function ExplorePage() {
   return (
     <>
       {/* ─── HERO ─── */}
-      <section className="py-28 md:py-36 relative overflow-hidden">
-        <div className="absolute top-[-10%] right-[-5%] w-[400px] h-[400px] rounded-full bg-pugh-blue/[0.04] blur-[100px]" />
-        <div className="absolute bottom-[-10%] left-[-8%] w-[300px] h-[300px] rounded-full bg-pa-sky/[0.03] blur-[80px]" />
+      <section className="bg-navy relative overflow-hidden py-14 md:py-20">
+        <div className="absolute top-[20%] right-[-5%] w-[400px] h-[400px] rounded-full bg-beaver-blue/10 blur-[150px]" />
+        <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-beaver-blue via-pa-sky to-pugh-blue" />
+        <div className="absolute bottom-0 left-[10%] right-[10%] h-[80px] bg-gradient-to-r from-beaver-blue/15 via-pa-sky/10 to-pugh-blue/10 blur-[60px]" />
 
         <div className="relative max-w-6xl mx-auto px-6">
           <FadeIn>
             <div className="max-w-3xl">
-              <p className="text-xs uppercase tracking-widest text-beaver-blue font-semibold mb-3">
+              <p className="text-xs uppercase tracking-widest text-pugh-blue font-semibold mb-3">
                 Explore AI
               </p>
               <h1
-                className="font-display text-navy font-bold leading-tight mb-6"
+                className="font-display text-white font-bold leading-tight mb-6"
                 style={{ fontSize: 'clamp(2.5rem, 5vw, 3.5rem)' }}
               >
                 Align yourself
               </h1>
-              <p className="text-text-muted text-lg leading-relaxed mb-4">
+              <p className="text-white/50 text-lg leading-relaxed mb-4">
                 AI is moving fast. These are the tools worth knowing right now, organized by what
                 you want to do with them. Straightforward descriptions of what each tool does and
                 why it matters.
               </p>
-              <p className="text-text-muted leading-relaxed">
+              <p className="text-white/50 leading-relaxed">
                 Whether you are writing a paper, building an app, or just trying to understand what
                 everyone is talking about, start here.
               </p>
@@ -96,7 +76,7 @@ export default function ExplorePage() {
       </section>
 
       {/* ─── AI ASSISTANTS ─── */}
-      <section className="pb-20 md:pb-28">
+      <section className="pt-14 md:pt-20 pb-14 md:pb-20">
         <div className="max-w-6xl mx-auto px-6">
           <FadeIn>
             <div className="flex items-center gap-3 mb-10">
@@ -127,7 +107,7 @@ export default function ExplorePage() {
       </section>
 
       {/* ─── RESEARCH ─── */}
-      <section className="py-20 md:py-28 bg-surface-alt relative overflow-hidden">
+      <section className="py-14 md:py-20 bg-surface-alt relative overflow-hidden">
         <div className="absolute top-[30%] right-[5%] w-[300px] h-[300px] rounded-full bg-pugh-blue/[0.03] blur-[80px]" />
 
         <div className="relative max-w-6xl mx-auto px-6">
@@ -160,7 +140,7 @@ export default function ExplorePage() {
       </section>
 
       {/* ─── DEVELOPER TOOLS ─── */}
-      <section className="py-20 md:py-28">
+      <section className="py-14 md:py-20">
         <div className="max-w-6xl mx-auto px-6">
           <FadeIn>
             <div className="flex items-center gap-3 mb-10">
@@ -191,7 +171,7 @@ export default function ExplorePage() {
       </section>
 
       {/* ─── CREATIVE ─── */}
-      <section className="py-20 md:py-28 bg-surface-alt relative overflow-hidden">
+      <section className="py-14 md:py-20 bg-surface-alt relative overflow-hidden">
         <div className="absolute bottom-[20%] left-[5%] w-[300px] h-[300px] rounded-full bg-pa-sky/[0.04] blur-[80px]" />
 
         <div className="relative max-w-6xl mx-auto px-6">
@@ -224,16 +204,22 @@ export default function ExplorePage() {
       </section>
 
       {/* ─── CTA ─── */}
-      <section className="py-20 md:py-28 bg-surface-alt">
-        <div className="max-w-6xl mx-auto px-6 text-center">
+      <section className="bg-navy relative overflow-hidden py-14 md:py-20">
+        <div className="absolute top-[20%] right-[-5%] w-[400px] h-[400px] rounded-full bg-beaver-blue/10 blur-[150px]" />
+        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-beaver-blue via-pa-sky to-pugh-blue" />
+        <div className="absolute top-0 left-[10%] right-[10%] h-[80px] bg-gradient-to-r from-beaver-blue/15 via-pa-sky/10 to-pugh-blue/10 blur-[60px]" />
+        <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-beaver-blue via-pa-sky to-pugh-blue" />
+        <div className="absolute bottom-0 left-[10%] right-[10%] h-[80px] bg-gradient-to-r from-beaver-blue/15 via-pa-sky/10 to-pugh-blue/10 blur-[60px]" />
+
+        <div className="relative max-w-6xl mx-auto px-6 text-center">
           <FadeIn>
             <h2
-              className="font-display text-navy font-bold leading-tight mb-4"
+              className="font-display text-white font-bold leading-tight mb-4"
               style={{ fontSize: 'clamp(1.75rem, 3vw, 2.5rem)' }}
             >
               Want to learn these tools hands-on?
             </h2>
-            <p className="text-text-muted mb-10 max-w-md mx-auto">
+            <p className="text-white/50 mb-10 max-w-md mx-auto">
               Labs members work with these tools on real projects. Hands-on, project-based learning.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
@@ -246,7 +232,7 @@ export default function ExplorePage() {
               </PressableButton>
               <PressableButton
                 href="/team"
-                className="inline-flex items-center gap-2 border border-border text-text px-8 py-4 rounded-xl font-medium text-sm"
+                className="inline-flex items-center gap-2 border border-white/20 text-white px-8 py-4 rounded-xl font-medium text-sm"
               >
                 How to join
               </PressableButton>
@@ -259,7 +245,8 @@ export default function ExplorePage() {
 }
 
 function ToolCard({ tool }: { tool: (typeof tools)[number] }) {
-  const Icon = toolIcons[tool.name] || MessageSquare
+  const domain = logoDomains[tool.name]
+  const logoUrl = domain ? `https://www.google.com/s2/favicons?sz=128&domain=${domain}` : null
   const cat = categories[tool.category]
 
   return (
@@ -268,8 +255,21 @@ function ToolCard({ tool }: { tool: (typeof tools)[number] }) {
     >
       <div className="flex items-start justify-between mb-5">
         <div className="flex items-center gap-3">
-          <div className={`w-10 h-10 rounded-lg ${cat.bg} flex items-center justify-center`}>
-            <Icon size={18} className="text-navy" />
+          <div
+            className={`w-10 h-10 rounded-lg ${cat.bg} flex items-center justify-center overflow-hidden`}
+          >
+            {logoUrl ? (
+              <img
+                src={logoUrl}
+                alt={`${tool.name} logo`}
+                width={24}
+                height={24}
+                className="w-6 h-6 object-contain"
+                loading="lazy"
+              />
+            ) : (
+              <MessageSquare size={18} className="text-navy" />
+            )}
           </div>
           <div>
             <h3 className="font-display text-navy text-lg font-semibold">{tool.name}</h3>

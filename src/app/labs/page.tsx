@@ -36,13 +36,15 @@ export default function LabsPage() {
   return (
     <>
       {/* ─── HERO ─── */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-navy to-beaver-blue text-white py-32 md:py-40">
+      <section className="bg-navy relative overflow-hidden py-20 md:py-28">
         {/* 3D floating shapes */}
         <FloatingShapes />
 
-        {/* Ambient glows */}
-        <div className="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] rounded-full bg-pugh-blue/[0.1] blur-[120px]" />
-        <div className="absolute bottom-[-15%] left-[-8%] w-[400px] h-[400px] rounded-full bg-pa-sky/[0.08] blur-[100px]" />
+        {/* Ambient glow */}
+        <div className="absolute top-[20%] right-[-5%] w-[400px] h-[400px] rounded-full bg-beaver-blue/10 blur-[150px]" />
+        {/* Gradient accent bar */}
+        <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-beaver-blue via-pa-sky to-pugh-blue" />
+        <div className="absolute bottom-0 left-[10%] right-[10%] h-[80px] bg-gradient-to-r from-beaver-blue/15 via-pa-sky/10 to-pugh-blue/10 blur-[60px]" />
 
         <div className="relative z-10 max-w-6xl mx-auto px-6 text-center pointer-events-none">
           <FadeIn>
@@ -50,14 +52,14 @@ export default function LabsPage() {
               Applied AI Labs
             </p>
             <h1
-              className="font-display font-bold leading-tight mb-6"
+              className="font-display text-white font-bold leading-tight mb-6"
               style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)' }}
             >
               Where students build with AI
               <br />
               and ship real projects
             </h1>
-            <p className="text-white/70 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed mb-12">
+            <p className="text-white/50 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed mb-12">
               Labs is the research and development arm of Applied AI. We run experiments, build
               tools, and give members who want to go deeper a place to work on real projects with
               real AI systems.
@@ -76,7 +78,7 @@ export default function LabsPage() {
       </section>
 
       {/* ─── WHAT LABS DOES ─── */}
-      <section className="py-24 md:py-32">
+      <section className="py-14 md:py-20">
         <div className="max-w-6xl mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <SlideIn direction="left">
@@ -143,7 +145,7 @@ export default function LabsPage() {
       </section>
 
       {/* ─── THE STACK ─── */}
-      <section className="py-24 md:py-32 bg-surface-alt relative overflow-hidden">
+      <section className="py-14 md:py-20 bg-surface-alt relative overflow-hidden">
         <div className="absolute bottom-0 right-0 w-[400px] h-[400px] rounded-full bg-pugh-blue/[0.04] blur-[100px]" />
 
         <div className="relative max-w-6xl mx-auto px-6">
@@ -186,7 +188,7 @@ export default function LabsPage() {
       </section>
 
       {/* ─── WHAT WE'VE BUILT ─── */}
-      <section className="py-24 md:py-32">
+      <section className="py-14 md:py-20">
         <div className="max-w-6xl mx-auto px-6">
           <FadeIn>
             <p className="text-xs uppercase tracking-widest text-beaver-blue font-semibold mb-3">
@@ -274,25 +276,25 @@ export default function LabsPage() {
       </section>
 
       {/* ─── CTA ─── */}
-      <section className="py-24 md:py-32 bg-gradient-to-br from-navy to-beaver-blue text-white relative overflow-hidden">
-        <div
-          className="absolute inset-0 opacity-[0.04]"
-          style={{
-            backgroundImage: 'radial-gradient(circle, #ffffff 1px, transparent 1px)',
-            backgroundSize: '24px 24px',
-          }}
-        />
-        <div className="absolute top-[20%] left-[10%] w-[300px] h-[300px] rounded-full bg-pugh-blue/[0.1] blur-[80px]" />
+      <section className="bg-navy relative overflow-hidden py-14 md:py-20">
+        {/* Gradient accent bar - top */}
+        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-beaver-blue via-pa-sky to-pugh-blue" />
+        <div className="absolute top-0 left-[10%] right-[10%] h-[80px] bg-gradient-to-r from-beaver-blue/15 via-pa-sky/10 to-pugh-blue/10 blur-[60px]" />
+        {/* Ambient glow */}
+        <div className="absolute top-[20%] right-[-5%] w-[400px] h-[400px] rounded-full bg-beaver-blue/10 blur-[150px]" />
+        {/* Gradient accent bar - bottom */}
+        <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-beaver-blue via-pa-sky to-pugh-blue" />
+        <div className="absolute bottom-0 left-[10%] right-[10%] h-[80px] bg-gradient-to-r from-beaver-blue/15 via-pa-sky/10 to-pugh-blue/10 blur-[60px]" />
 
         <div className="relative max-w-6xl mx-auto px-6 text-center">
           <FadeIn>
             <h2
-              className="font-display font-bold leading-tight mb-4"
+              className="font-display text-white font-bold leading-tight mb-4"
               style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}
             >
               Build something real
             </h2>
-            <p className="text-white/60 text-lg max-w-md mx-auto mb-12">
+            <p className="text-white/50 text-lg max-w-md mx-auto mb-12">
               Labs is where you go from learning about AI to building with it. Everyone is welcome.
               Just bring curiosity.
             </p>

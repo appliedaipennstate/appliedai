@@ -1,13 +1,13 @@
 import type { Metadata } from 'next'
 
 export const siteMetadata: Metadata = {
-  metadataBase: new URL('https://andysalvo.github.io/appliedai'),
+  metadataBase: new URL('https://appliedaipennstate.com'),
   title: {
-    default: 'Applied AI',
+    default: 'Applied AI Club at Penn State',
     template: '%s | Applied AI',
   },
   description:
-    'The Applied AI Club at Penn State helps students understand how AI is used in the real world.',
+    'Where Penn State students learn to think with AI. Guest speakers, hands-on tool walkthroughs, and real projects through Applied AI Labs.',
   keywords: [
     'AI',
     'artificial intelligence',
@@ -15,6 +15,10 @@ export const siteMetadata: Metadata = {
     'student club',
     'applied AI',
     'machine learning',
+    'Smeal College of Business',
+    'AI tools',
+    'Claude',
+    'ChatGPT',
   ],
   robots: {
     index: true,
@@ -30,9 +34,16 @@ export const siteMetadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    siteName: 'Applied AI',
-    title: 'Applied AI',
+    url: 'https://appliedaipennstate.com',
+    siteName: 'Applied AI Club at Penn State',
+    title: 'Applied AI Club at Penn State',
     description:
-      'The Applied AI Club at Penn State helps students understand how AI is used in the real world.',
+      'Where Penn State students learn to think with AI. Guest speakers, hands-on tool walkthroughs, and real projects through Applied AI Labs.',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Applied AI Club at Penn State',
+    description:
+      'Where Penn State students learn to think with AI. Guest speakers, hands-on sessions, and real projects.',
   },
 }

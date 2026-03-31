@@ -1,22 +1,20 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { ChevronDown, ArrowRight, Calendar, FlaskConical, Compass } from 'lucide-react'
+import { ArrowRight, Calendar, FlaskConical, Compass, Mic, Mail } from 'lucide-react'
 import { assetPath } from '@/lib/assetPath'
 import { FadeIn } from '@/components/ui/FadeIn'
 import { StaggerGrid, StaggerItem } from '@/components/ui/StaggerGrid'
-import { AnimatedCard } from '@/components/ui/AnimatedCard'
 import { PressableButton } from '@/components/ui/PressableButton'
 import { MailingListForm } from '@/components/MailingListForm'
+import { MailingListFormLight } from '@/components/MailingListFormLight'
 
 const sections = [
   {
     icon: Calendar,
     title: 'Events and Programming',
     description:
-      'Guest speakers, tool walkthroughs, and discussions about how AI is changing business and the workplace. Starting Fall 2026 at Penn State.',
+      'Guest speakers, tool walkthroughs, and discussions about how AI is changing business and the workplace. Starting Fall 2026.',
     href: '/what-we-do',
-    accent: 'border-t-navy',
-    iconBg: 'bg-navy/[0.08]',
     cta: 'Learn more',
   },
   {
@@ -25,8 +23,6 @@ const sections = [
     description:
       'The R&D arm of the club. Build real projects with Claude Code, Next.js, GitHub Actions, and the same tools real teams ship with.',
     href: '/labs',
-    accent: 'border-t-beaver-blue',
-    iconBg: 'bg-beaver-blue/[0.08]',
     cta: 'Explore Labs',
   },
   {
@@ -35,8 +31,6 @@ const sections = [
     description:
       'A registry of AI tools worth knowing, organized for students at every level. From beginner-friendly assistants to agentic tools shaping the industry.',
     href: '/explore',
-    accent: 'border-t-pugh-blue',
-    iconBg: 'bg-pugh-blue/[0.15]',
     cta: 'Browse tools',
   },
 ]
@@ -45,116 +39,99 @@ export default function Home() {
   return (
     <>
       {/* ─── HERO ─── */}
-      <section className="relative overflow-hidden py-36 md:py-44 lg:py-52">
-        <div className="absolute top-[-15%] right-[-8%] w-[500px] h-[500px] rounded-full bg-pugh-blue/[0.04] blur-[120px]" />
-        <div className="absolute bottom-[-10%] left-[-5%] w-[400px] h-[400px] rounded-full bg-pa-sky/[0.03] blur-[100px]" />
-        <div
-          className="absolute inset-0 opacity-[0.03]"
-          style={{
-            backgroundImage: 'radial-gradient(circle, #001E44 1px, transparent 1px)',
-            backgroundSize: '32px 32px',
-          }}
-        />
+      <section className="relative overflow-hidden bg-navy min-h-[80vh] flex items-center">
+        {/* Gradient accent glow matching logo bar */}
+        <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-beaver-blue via-pa-sky to-pugh-blue" />
+        <div className="absolute bottom-0 left-[10%] right-[10%] h-[120px] bg-gradient-to-r from-beaver-blue/20 via-pa-sky/15 to-pugh-blue/10 blur-[80px]" />
+        <div className="absolute top-[20%] right-[-5%] w-[400px] h-[400px] rounded-full bg-beaver-blue/10 blur-[150px]" />
 
-        <div className="relative max-w-6xl mx-auto px-6">
-          <div className="flex flex-col items-center text-center">
-            <FadeIn>
-              <Image
-                src={assetPath('/images/logo.png')}
-                alt="Applied AI"
-                width={840}
-                height={241}
-                className="w-[min(65vw,380px)] h-auto"
-                priority
-              />
-            </FadeIn>
-            <FadeIn delay={0.3}>
-              <p className="mt-10 text-text-muted text-lg md:text-xl leading-relaxed max-w-md tracking-wide">
-                Where Penn State students learn to think with AI.
-              </p>
-            </FadeIn>
-            <FadeIn delay={0.5}>
-              <div className="mt-12 flex flex-wrap justify-center gap-4">
-                <PressableButton
-                  href="/team"
-                  className="inline-flex items-center gap-2 bg-beaver-blue text-white px-8 py-4 rounded-xl font-medium text-sm"
-                >
-                  Get involved
-                  <ArrowRight size={16} />
-                </PressableButton>
-                <PressableButton
-                  href="/explore"
-                  className="inline-flex items-center gap-2 border border-border text-text px-8 py-4 rounded-xl font-medium text-sm"
-                >
-                  Explore AI tools
-                </PressableButton>
-              </div>
-            </FadeIn>
-          </div>
-        </div>
-
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-          <ChevronDown size={20} className="text-text-muted/40" />
-        </div>
-      </section>
-
-      {/* ─── MISSION ─── */}
-      <section className="py-24 md:py-32">
-        <div className="max-w-6xl mx-auto px-6">
+        <div className="relative max-w-5xl mx-auto px-6 py-32 w-full text-center">
           <FadeIn>
-            <div className="max-w-3xl">
-              <p className="text-xs uppercase tracking-widest text-beaver-blue font-semibold mb-6">
-                Our Mission
-              </p>
-              <div className="border-l-4 border-beaver-blue pl-6 md:pl-8">
-                <p
-                  className="font-display text-navy font-semibold leading-snug"
-                  style={{ fontSize: 'clamp(1.5rem, 3vw, 2rem)' }}
-                >
-                  Our mission is to build a community where students can learn how AI is applied in
-                  real-world settings and explore the many ways it creates value in different areas
-                  of business.
-                </p>
-              </div>
-              <p className="mt-8 text-text-muted text-base leading-relaxed max-w-2xl">
-                The Applied AI Club at Penn State brings together students who are curious about AI
-                and want to learn and build together. Regular meetings and events begin Fall 2026.
-              </p>
+            <Image
+              src={assetPath('/images/logo.png')}
+              alt="Applied AI"
+              width={840}
+              height={241}
+              className="w-[min(80vw,440px)] h-auto mx-auto brightness-0 invert"
+              priority
+            />
+          </FadeIn>
+          <FadeIn delay={0.25}>
+            <p className="mt-8 text-white/50 text-lg md:text-xl leading-relaxed max-w-lg mx-auto">
+              Where Penn State students learn to think with AI.
+            </p>
+          </FadeIn>
+          <FadeIn delay={0.45}>
+            <div className="mt-10 flex flex-wrap justify-center gap-4">
+              <PressableButton
+                href="/team"
+                className="inline-flex items-center gap-2 bg-white text-navy px-8 py-4 rounded-xl font-semibold text-sm"
+              >
+                Get involved
+                <ArrowRight size={16} />
+              </PressableButton>
+              <PressableButton
+                href="/explore"
+                className="inline-flex items-center gap-2 border border-white/15 text-white/80 px-8 py-4 rounded-xl font-medium text-sm hover:bg-white/[0.06]"
+              >
+                Explore AI tools
+              </PressableButton>
             </div>
           </FadeIn>
         </div>
       </section>
 
-      {/* ─── WHAT WE DO ─── */}
-      <section className="py-24 md:py-32 bg-surface-alt relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-[400px] h-[400px] rounded-full bg-pugh-blue/[0.04] blur-[100px]" />
-
-        <div className="relative max-w-6xl mx-auto px-6">
+      {/* ─── MISSION ─── */}
+      <section className="py-16 md:py-24">
+        <div className="max-w-3xl mx-auto px-6 text-center">
           <FadeIn>
-            <p className="text-xs uppercase tracking-widest text-beaver-blue font-semibold mb-3">
+            <p className="text-xs uppercase tracking-widest text-beaver-blue font-semibold mb-6">
+              Our Mission
+            </p>
+            <p
+              className="font-display text-navy font-semibold leading-snug"
+              style={{ fontSize: 'clamp(1.5rem, 3vw, 2.25rem)' }}
+            >
+              Build a community where students learn how AI is applied in real-world settings and
+              explore the many ways it creates value across business.
+            </p>
+            <p className="mt-8 text-text-muted text-base leading-relaxed max-w-xl mx-auto">
+              The Applied AI Club at Penn State brings together students who are curious about AI
+              and want to learn and build together. Regular meetings and events begin Fall 2026.
+            </p>
+          </FadeIn>
+        </div>
+      </section>
+
+      {/* ─── GRADIENT DIVIDER ─── */}
+      <div className="max-w-3xl mx-auto px-6">
+        <div className="h-[2px] bg-gradient-to-r from-transparent via-beaver-blue/20 to-transparent" />
+      </div>
+
+      {/* ─── WHAT WE DO ─── */}
+      <section className="py-16 md:py-24">
+        <div className="max-w-6xl mx-auto px-6">
+          <FadeIn>
+            <p className="text-xs uppercase tracking-widest text-beaver-blue font-semibold mb-3 text-center">
               What We Do
             </p>
             <h2
-              className="font-display text-navy font-bold leading-tight mb-14"
+              className="font-display text-navy font-bold leading-tight mb-14 text-center"
               style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}
             >
               Three ways to get involved
             </h2>
           </FadeIn>
 
-          <StaggerGrid className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <StaggerGrid className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {sections.map((section) => {
               const Icon = section.icon
               return (
                 <StaggerItem key={section.title}>
                   <Link href={section.href} className="block h-full">
-                    <AnimatedCard
-                      className={`bg-white rounded-2xl border-t-[3px] ${section.accent} border border-border px-8 py-10 h-full cursor-pointer shadow-sm`}
-                    >
-                      <div
-                        className={`w-12 h-12 rounded-xl ${section.iconBg} flex items-center justify-center mb-6`}
-                      >
-                        <Icon size={22} className="text-navy" />
+                    <div className="bg-white rounded-2xl border border-border px-8 py-10 h-full hover:shadow-lg hover:border-beaver-blue/20 transition-all cursor-pointer group">
+                      <div className="w-12 h-12 rounded-xl bg-surface-alt flex items-center justify-center mb-6 group-hover:bg-beaver-blue/[0.08] transition-colors">
+                        <Icon size={22} className="text-beaver-blue" />
                       </div>
                       <h3 className="font-display text-navy text-lg font-semibold mb-4">
                         {section.title}
@@ -162,10 +139,10 @@ export default function Home() {
                       <p className="text-text-muted text-sm leading-relaxed">
                         {section.description}
                       </p>
-                      <p className="mt-8 text-beaver-blue text-xs uppercase tracking-wider font-semibold flex items-center gap-1.5">
+                      <p className="mt-8 text-beaver-blue text-xs uppercase tracking-wider font-semibold flex items-center gap-1.5 group-hover:gap-2.5 transition-all">
                         {section.cta} <ArrowRight size={12} />
                       </p>
-                    </AnimatedCard>
+                    </div>
                   </Link>
                 </StaggerItem>
               )
@@ -174,45 +151,100 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ─── JOIN ─── */}
-      <section id="join" className="py-24 md:py-32 relative overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-pugh-blue/[0.04] blur-[100px]" />
+      {/* ─── SPEAKERS ─── */}
+      <section className="bg-navy relative overflow-hidden">
+        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-beaver-blue via-pa-sky to-pugh-blue" />
+        <div className="absolute top-0 left-[15%] right-[15%] h-[80px] bg-gradient-to-r from-beaver-blue/15 via-pa-sky/10 to-pugh-blue/10 blur-[60px]" />
 
-        <div className="relative max-w-6xl mx-auto px-6">
-          <div className="max-w-xl mx-auto text-center">
-            <FadeIn>
-              <h2
-                className="font-display text-navy font-bold leading-tight mb-4"
-                style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}
-              >
-                Stay in the loop
-              </h2>
-              <p className="text-text-muted mb-12">
-                Add your info and we will keep you updated on events, launches, and how to get
-                involved.
-              </p>
-
-              <MailingListForm />
-
-              <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4 text-sm text-text-muted">
-                <a
-                  href="https://groupme.com/join_group/111640691/x4UBh7SL"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-navy transition-colors"
+        <div className="relative max-w-6xl mx-auto px-6 py-16 md:py-24">
+          <FadeIn>
+            <div className="flex flex-col md:flex-row items-start gap-12 md:gap-16">
+              <div className="flex-1">
+                <div className="flex items-center gap-3 mb-5">
+                  <div className="w-10 h-10 rounded-xl bg-white/[0.06] flex items-center justify-center">
+                    <Mic size={20} className="text-pugh-blue" />
+                  </div>
+                  <p className="text-pugh-blue text-xs uppercase tracking-widest font-semibold">
+                    Guest Speaker Program
+                  </p>
+                </div>
+                <h2 className="font-display text-white text-2xl md:text-3xl font-bold leading-tight mb-4">
+                  Share what AI looks like in your work
+                </h2>
+                <p className="text-white/40 leading-relaxed mb-8">
+                  We bring in professionals from all fields who can talk honestly about how AI has
+                  changed the way they work. 30 to 45 minutes, Zoom or in person.
+                </p>
+                <PressableButton
+                  href="/speakers"
+                  className="inline-flex items-center gap-2 bg-white text-navy px-7 py-3.5 rounded-xl font-semibold text-sm"
                 >
-                  Students: Join our GroupMe
-                </a>
-                <span className="hidden sm:inline text-border">|</span>
-                <a
-                  href="mailto:appliedaipsu@gmail.com"
-                  className="hover:text-navy transition-colors"
-                >
-                  appliedaipsu@gmail.com
-                </a>
+                  Apply to speak
+                  <ArrowRight size={14} />
+                </PressableButton>
               </div>
-            </FadeIn>
-          </div>
+              <div className="flex-1 w-full max-w-sm">
+                <div className="bg-white/[0.04] border border-white/[0.08] rounded-2xl p-6">
+                  <p className="text-white/60 font-display font-semibold text-sm mb-4">
+                    Topics our members want to hear about
+                  </p>
+                  <div className="space-y-3">
+                    {[
+                      'AI in consulting and professional services',
+                      'How startups use AI to compete',
+                      'AI in finance and risk modeling',
+                      'What "using AI at work" actually looks like',
+                      'How to talk about AI skills in interviews',
+                    ].map((topic) => (
+                      <div key={topic} className="flex items-start gap-3">
+                        <div className="w-1.5 h-1.5 rounded-full bg-pa-sky mt-2 shrink-0" />
+                        <p className="text-white/40 text-sm">{topic}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </FadeIn>
+        </div>
+        <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-pugh-blue via-pa-sky to-beaver-blue" />
+      </section>
+
+      {/* ─── JOIN ─── */}
+      <section id="join" className="py-16 md:py-24">
+        <div className="max-w-xl mx-auto px-6 text-center">
+          <FadeIn>
+            <div className="w-14 h-14 rounded-2xl bg-surface-alt flex items-center justify-center mx-auto mb-6">
+              <Mail size={24} className="text-beaver-blue" />
+            </div>
+            <h2
+              className="font-display text-navy font-bold leading-tight mb-4"
+              style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}
+            >
+              Stay in the loop
+            </h2>
+            <p className="text-text-muted mb-12">
+              Add your info and we will keep you updated on events, launches, and how to get
+              involved.
+            </p>
+
+            <MailingListFormLight />
+
+            <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4 text-sm text-text-muted">
+              <a
+                href="https://groupme.com/join_group/111640691/x4UBh7SL"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-navy transition-colors"
+              >
+                Students: Join our GroupMe
+              </a>
+              <span className="hidden sm:inline text-border">|</span>
+              <a href="mailto:appliedaipsu@gmail.com" className="hover:text-navy transition-colors">
+                appliedaipsu@gmail.com
+              </a>
+            </div>
+          </FadeIn>
         </div>
       </section>
     </>
