@@ -90,7 +90,7 @@ export function SpeakerChat() {
   const hasMessages = messages.length > 0
 
   return (
-    <div className="rounded-2xl overflow-hidden bg-beaver-blue/90 backdrop-blur-xl border border-white/[0.12] shadow-2xl shadow-beaver-blue/20 flex flex-col max-h-[500px]">
+    <div className="rounded-2xl overflow-hidden bg-beaver-blue/90 backdrop-blur-xl border border-white/[0.12] shadow-2xl shadow-beaver-blue/20 flex flex-col h-full">
       {/* Top shimmer */}
       <div className="h-px bg-gradient-to-r from-transparent via-white/25 to-transparent" />
 
