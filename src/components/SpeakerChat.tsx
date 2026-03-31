@@ -5,7 +5,7 @@ import { Sparkles, Send } from 'lucide-react'
 
 const QUICK_QUESTIONS = [
   'What does speaking look like?',
-  'Where are you in the speaker program?',
+  'Who has spoken before?',
   'What topics do students want to hear about?',
 ]
 
@@ -14,6 +14,7 @@ export function SpeakerChat() {
   const [messages, setMessages] = useState<{ role: string; content: string }[]>([])
   const [loading, setLoading] = useState(false)
   const [streamingText, setStreamingText] = useState('')
+  const [suggestions, setSuggestions] = useState<string[]>([])
   const scrollRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -31,6 +32,7 @@ export function SpeakerChat() {
       setMessage('')
       setLoading(true)
       setStreamingText('')
+      setSuggestions([])
 
       try {
         const resp = await fetch('/api/chat', {
@@ -56,6 +58,8 @@ export function SpeakerChat() {
                   if (data.type === 'text') {
                     fullText += data.text
                     setStreamingText(fullText)
+                  } else if (data.type === 'suggestions') {
+                    setSuggestions(data.suggestions)
                   }
                 } catch {
                   // skip malformed lines
@@ -155,6 +159,22 @@ export function SpeakerChat() {
             <span className="w-1.5 h-1.5 rounded-full bg-white/25 animate-[bounce_1.4s_ease-in-out_infinite]" />
             <span className="w-1.5 h-1.5 rounded-full bg-white/25 animate-[bounce_1.4s_ease-in-out_0.2s_infinite]" />
             <span className="w-1.5 h-1.5 rounded-full bg-white/25 animate-[bounce_1.4s_ease-in-out_0.4s_infinite]" />
+          </div>
+        )}
+
+        {/* Contextual follow-ups */}
+        {suggestions.length > 0 && !loading && (
+          <div className="space-y-2 pt-2">
+            {suggestions.map((q) => (
+              <button
+                key={q}
+                onClick={() => sendMessage(q)}
+                className="group flex items-center gap-3 px-4 py-3 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.06] hover:border-white/[0.12] transition-all text-white/50 hover:text-white/80 text-sm w-full text-left cursor-pointer"
+              >
+                <span className="w-1 h-1 rounded-full bg-white/30 group-hover:bg-white/60 transition-colors shrink-0" />
+                {q}
+              </button>
+            ))}
           </div>
         )}
 

@@ -129,16 +129,50 @@ export async function POST(req: NextRequest) {
     })
 
     const encoder = new TextEncoder()
+    let fullResponse = ''
     const readable = new ReadableStream({
       async start(controller) {
         for await (const chunk of stream) {
           const text = chunk.choices[0]?.delta?.content
           if (text) {
+            fullResponse += text
             controller.enqueue(
               encoder.encode(`data: ${JSON.stringify({ type: 'text', text })}\n\n`)
             )
           }
         }
+
+        // Generate contextual follow-up suggestions
+        const followUp = await openai.chat.completions.create({
+          model: 'gpt-4o-mini',
+          temperature: 0.5,
+          max_tokens: 80,
+          messages: [
+            {
+              role: 'system',
+              content:
+                'Given this conversation about speaking at a student AI club, suggest 2 short follow-up questions the user might ask next. Return ONLY a JSON array of 2 strings, nothing else. Keep each under 8 words.',
+            },
+            {
+              role: 'user',
+              content: `User asked: "${recentMessages[recentMessages.length - 1].content}"\nAssistant answered: "${fullResponse}"`,
+            },
+          ],
+        })
+
+        try {
+          const suggestions = JSON.parse(followUp.choices[0]?.message?.content || '[]')
+          if (Array.isArray(suggestions) && suggestions.length > 0) {
+            controller.enqueue(
+              encoder.encode(
+                `data: ${JSON.stringify({ type: 'suggestions', suggestions: suggestions.slice(0, 2) })}\n\n`
+              )
+            )
+          }
+        } catch {
+          // skip if parsing fails
+        }
+
         controller.enqueue(encoder.encode(`data: ${JSON.stringify({ type: 'done' })}\n\n`))
         controller.close()
       },
