@@ -63,6 +63,8 @@ jobs:
         env:
           # Custom domain (appliedaipennstate.com) serves at root, no basePath needed
           NEXT_PUBLIC_BASE_PATH: ''
+          NEXT_PUBLIC_MAILING_LIST_ENDPOINT: ${{ secrets.MAILING_LIST_ENDPOINT }}
+          NEXT_PUBLIC_LABS_MAILING_LIST_ENDPOINT: ${{ secrets.LABS_MAILING_LIST_ENDPOINT }}
           NEXT_PUBLIC_SPEAKER_FORM_ENDPOINT: ${{ secrets.SPEAKER_FORM_ENDPOINT }}
 
       - name: Upload artifact for Pages
