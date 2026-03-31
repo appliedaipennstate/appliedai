@@ -86,7 +86,7 @@ export function SpeakerChat() {
   const hasMessages = messages.length > 0
 
   return (
-    <div className="rounded-2xl overflow-hidden bg-beaver-blue/90 backdrop-blur-xl border border-white/[0.12] shadow-2xl shadow-beaver-blue/20">
+    <div className="rounded-2xl overflow-hidden bg-beaver-blue/90 backdrop-blur-xl border border-white/[0.12] shadow-2xl shadow-beaver-blue/20 flex-1 flex flex-col">
       {/* Top shimmer */}
       <div className="h-px bg-gradient-to-r from-transparent via-white/25 to-transparent" />
 
@@ -106,7 +106,7 @@ export function SpeakerChat() {
       </div>
 
       {/* Messages area */}
-      <div ref={scrollRef} className="h-72 overflow-y-auto px-5 py-4 space-y-4">
+      <div ref={scrollRef} className="flex-1 min-h-[16rem] overflow-y-auto px-5 py-4 space-y-4">
         {/* Greeting */}
         {!hasMessages && !loading && (
           <p className="text-white/40 text-sm leading-relaxed">

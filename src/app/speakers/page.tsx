@@ -242,11 +242,11 @@ export default function SpeakersPage() {
       {/* ─── FORM + CHAT ─── */}
       <section id="speak" className="px-6 py-14 md:py-20 bg-surface-alt scroll-mt-20">
         <div className="max-w-5xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-            <FadeIn>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
+            <FadeIn className="flex">
               <div
                 id="signup"
-                className="bg-white rounded-2xl border border-border p-8 md:p-10 scroll-mt-24"
+                className="bg-white rounded-2xl border border-border p-8 md:p-10 scroll-mt-24 flex-1 flex flex-col"
               >
                 <h2 className="font-display text-lg font-bold text-navy mb-2 text-center">
                   Interested in speaking?
@@ -258,8 +258,8 @@ export default function SpeakersPage() {
               </div>
             </FadeIn>
 
-            <FadeIn delay={0.15}>
-              <div id="ask" className="scroll-mt-24">
+            <FadeIn delay={0.15} className="flex">
+              <div id="ask" className="scroll-mt-24 flex-1 flex flex-col">
                 <SpeakerChat />
               </div>
             </FadeIn>
