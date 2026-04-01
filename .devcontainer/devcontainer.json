@@ -1,8 +1,8 @@
 {
   "name": "Applied AI Club",
   "image": "mcr.microsoft.com/devcontainers/javascript-node:20",
-  "postCreateCommand": "npm install && chmod +x .devcontainer/start.sh",
-  "postStartCommand": ".devcontainer/start.sh",
+  "postCreateCommand": "npm install",
+  "postStartCommand": "git pull && npm run dev",
   "forwardPorts": [3000],
   "portsAttributes": {
     "3000": {
