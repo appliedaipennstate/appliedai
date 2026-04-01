@@ -61,18 +61,6 @@ const artifacts: Artifact[] = [
   },
 ]
 
-function ExplainTip({ term, tip }: { term: string; tip: string }) {
-  return (
-    <span className="group/explain relative text-pa-sky underline decoration-dotted underline-offset-2 cursor-help whitespace-nowrap">
-      {term}
-      <span className="hidden group-hover/explain:block absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-navy text-white px-3.5 py-2.5 rounded-lg text-xs leading-relaxed w-60 z-50 shadow-lg pointer-events-none">
-        {tip}
-        <span className="absolute top-full left-1/2 -translate-x-1/2 border-l-[6px] border-r-[6px] border-t-[6px] border-l-transparent border-r-transparent border-t-navy" />
-      </span>
-    </span>
-  )
-}
-
 function ArtifactCard({ artifact }: { artifact: Artifact }) {
   const shouldReduceMotion = useReducedMotion()
   const Icon = artifact.icon
@@ -262,101 +250,50 @@ function FilesView({ onBack }: { onBack: () => void }) {
       <h3 className="font-display text-base text-navy mb-4">Project Files</h3>
       <div className="flex flex-col gap-3">
         <CollapsibleSection
-          title={
-            <>
-              You Edit These (
-              <ExplainTip
-                term="data files"
-                tip="These are simple lists that hold all the content on the site. You don't write code -- the agent edits these for you."
-              />
-              )
-            </>
-          }
+          title="You Edit These (data files)"
           colorClasses="bg-green-100 text-green-800"
         >
-          <div className="px-3.5 py-1.5 pl-8 text-[11px] text-text-muted border-t border-border font-mono">
-            src/data/agents.ts -{' '}
-            <ExplainTip
-              term="agent list"
-              tip="Every club member who contributes gets an agent profile here. It tracks who you are, your role, and your work in the repo."
-            />
+          <div className="px-3.5 py-2 pl-8 text-[11px] text-text-muted border-t border-border">
+            <span className="font-mono">src/data/agents.ts</span>
+            <span className="text-text-muted"> — the member directory on the site</span>
           </div>
-          <div className="px-3.5 py-1.5 pl-8 text-[11px] text-text-muted border-t border-border font-mono">
-            src/data/tools.ts -{' '}
-            <ExplainTip
-              term="AI tools list"
-              tip="The list of AI tools shown on the Explore page. Each entry has a name, description, category, and link."
-            />
+          <div className="px-3.5 py-2 pl-8 text-[11px] text-text-muted border-t border-border">
+            <span className="font-mono">src/data/tools.ts</span>
+            <span className="text-text-muted"> — AI tools on the Explore page</span>
           </div>
-          <div className="px-3.5 py-1.5 pl-8 text-[11px] text-text-muted border-t border-border font-mono">
-            src/data/pillars.ts -{' '}
-            <ExplainTip
-              term="club programs"
-              tip="The three pillars of the club: Events, Labs, and Explore AI. These rarely change."
-            />
+          <div className="px-3.5 py-2 pl-8 text-[11px] text-text-muted border-t border-border">
+            <span className="font-mono">src/data/pillars.ts</span>
+            <span className="text-text-muted"> — club programs (rarely changes)</span>
+          </div>
+        </CollapsibleSection>
+
+        <CollapsibleSection title="Pages (admin only)" colorClasses="bg-blue-100 text-blue-800">
+          <div className="px-3.5 py-2 pl-8 text-[11px] text-text-muted border-t border-border">
+            <span className="font-mono">src/app/page.tsx</span> — home
+          </div>
+          <div className="px-3.5 py-2 pl-8 text-[11px] text-text-muted border-t border-border">
+            <span className="font-mono">src/app/about/</span> — about us
+          </div>
+          <div className="px-3.5 py-2 pl-8 text-[11px] text-text-muted border-t border-border">
+            <span className="font-mono">src/app/explore/</span> — AI tools
+          </div>
+          <div className="px-3.5 py-2 pl-8 text-[11px] text-text-muted border-t border-border">
+            <span className="font-mono">src/app/agents/</span> — agent directory
           </div>
         </CollapsibleSection>
 
         <CollapsibleSection
-          title={
-            <>
-              Pages (
-              <ExplainTip
-                term="admin only"
-                tip="Only Andy and Ryan can edit page layouts. Regular contributors add content through the agent list and tools list."
-              />
-              )
-            </>
-          }
-          colorClasses="bg-blue-100 text-blue-800"
-        >
-          <div className="px-3.5 py-1.5 pl-8 text-[11px] text-text-muted border-t border-border font-mono">
-            src/app/page.tsx - home
-          </div>
-          <div className="px-3.5 py-1.5 pl-8 text-[11px] text-text-muted border-t border-border font-mono">
-            src/app/about/ - about us
-          </div>
-          <div className="px-3.5 py-1.5 pl-8 text-[11px] text-text-muted border-t border-border font-mono">
-            src/app/explore/ - AI tools
-          </div>
-          <div className="px-3.5 py-1.5 pl-8 text-[11px] text-text-muted border-t border-border font-mono">
-            src/app/agents/ - agent directory
-          </div>
-        </CollapsibleSection>
-
-        <CollapsibleSection
-          title={
-            <>
-              Don&apos;t Touch (
-              <ExplainTip
-                term="infrastructure"
-                tip="These files control how the site is built, tested, and deployed. Changing them can break things. Leave them alone."
-              />
-              )
-            </>
-          }
+          title="Don't Touch (infrastructure)"
           colorClasses="bg-surface text-text-muted"
         >
-          <div className="px-3.5 py-1.5 pl-8 text-[11px] text-text-muted border-t border-border font-mono">
-            brand/ -{' '}
-            <ExplainTip
-              term="Penn State brand assets"
-              tip="Official Penn State colors, fonts, and design rules. The site must follow these -- it's a student org requirement."
-            />
+          <div className="px-3.5 py-2 pl-8 text-[11px] text-text-muted border-t border-border">
+            <span className="font-mono">brand/</span> — Penn State colors, fonts, design rules
           </div>
-          <div className="px-3.5 py-1.5 pl-8 text-[11px] text-text-muted border-t border-border font-mono">
-            content/ -{' '}
-            <ExplainTip
-              term="voice and writing rules"
-              tip="Rules for how we write: no hype words, no em dashes, describe what exists. The agent enforces these automatically."
-            />
+          <div className="px-3.5 py-2 pl-8 text-[11px] text-text-muted border-t border-border">
+            <span className="font-mono">content/</span> — writing rules the agent enforces
           </div>
-          <div className="px-3.5 py-1.5 pl-8 text-[11px] text-text-muted border-t border-border font-mono">
-            .github/ -{' '}
-            <ExplainTip
-              term="CI/CD pipelines"
-              tip="Automated checks that run when you submit changes. They test the code, check formatting, and deploy the site. You never need to touch these."
-            />
+          <div className="px-3.5 py-2 pl-8 text-[11px] text-text-muted border-t border-border">
+            <span className="font-mono">.github/</span> — automated checks and deploys
           </div>
         </CollapsibleSection>
       </div>
