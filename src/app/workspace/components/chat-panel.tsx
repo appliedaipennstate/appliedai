@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react'
 import { LazyMotion, domAnimation, m, useReducedMotion } from 'framer-motion'
-import { Send, User, Wrench, BookOpen, MessageCircle } from 'lucide-react'
+import { Send, User, Wrench, MessageCircle, Lightbulb } from 'lucide-react'
 import type { ChatMessage } from '../lib/types'
 
 interface ChatPanelProps {
@@ -15,24 +15,28 @@ interface ChatPanelProps {
 
 const quickActions = [
   {
+    label: 'Share ideas for the club',
+    icon: Lightbulb,
+    color: 'bg-navy',
+    primary: true,
+  },
+  {
     label: 'Add yourself to the agent list',
     icon: User,
     color: 'bg-blue-100',
+    primary: false,
   },
   {
     label: 'Add an AI tool to Explore',
     icon: Wrench,
     color: 'bg-green-100',
-  },
-  {
-    label: 'Learn how the website works',
-    icon: BookOpen,
-    color: 'bg-amber-100',
+    primary: false,
   },
   {
     label: 'Just ask me anything',
     icon: MessageCircle,
     color: 'bg-purple-100',
+    primary: false,
   },
 ]
 
@@ -103,12 +107,20 @@ export function ChatPanel({
                   <button
                     key={action.label}
                     onClick={() => onSend(action.label)}
-                    className="flex items-center gap-3 px-3.5 py-2.5 bg-white border border-border rounded-lg text-left text-sm text-text hover:border-beaver-blue hover:bg-surface-alt transition-colors"
+                    className={`flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-left text-sm transition-colors ${
+                      action.primary
+                        ? 'bg-navy text-white border border-navy hover:bg-beaver-blue hover:border-beaver-blue'
+                        : 'bg-white border border-border text-text hover:border-beaver-blue hover:bg-surface-alt'
+                    }`}
                   >
                     <span
-                      className={`w-7 h-7 rounded-md flex items-center justify-center flex-shrink-0 ${action.color}`}
+                      className={`w-7 h-7 rounded-md flex items-center justify-center flex-shrink-0 ${
+                        action.primary ? 'bg-white/20' : action.color
+                      }`}
                     >
-                      <action.icon className="w-3.5 h-3.5" />
+                      <action.icon
+                        className={`w-3.5 h-3.5 ${action.primary ? 'text-white' : ''}`}
+                      />
                     </span>
                     {action.label}
                   </button>

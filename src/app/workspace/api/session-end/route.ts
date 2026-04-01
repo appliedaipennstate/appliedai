@@ -28,14 +28,21 @@ export async function POST(req: NextRequest) {
     const commitMsg = summary || 'feat: workspace contribution'
 
     // Check if there are changes to commit
-    const status = execSync('git status --porcelain src/data/', { cwd, encoding: 'utf-8' }).trim()
-    if (!status) {
+    const statusData = execSync('git status --porcelain src/data/', {
+      cwd,
+      encoding: 'utf-8',
+    }).trim()
+    const statusContrib = execSync('git status --porcelain contributions/', {
+      cwd,
+      encoding: 'utf-8',
+    }).trim()
+    if (!statusData && !statusContrib) {
       return Response.json({ success: false, message: 'No changes to submit.' })
     }
 
-    // Create branch, stage data files only, commit, push, create PR
+    // Create branch, stage data files and contributions, commit, push, create PR
     execSync(`git checkout -b "${branch}"`, { cwd })
-    execSync('git add src/data/', { cwd })
+    execSync('git add src/data/ contributions/', { cwd })
     execSync(`git commit -m "${commitMsg.replace(/"/g, '\\"')}"`, { cwd })
     execSync(`git push -u origin "${branch}"`, { cwd })
 
