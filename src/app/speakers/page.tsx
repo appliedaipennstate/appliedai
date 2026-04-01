@@ -1,6 +1,5 @@
 import { Mic, Clock, Video, Users, CheckCircle2, Gift } from 'lucide-react'
 import { FadeIn } from '@/components/ui/FadeIn'
-import { SlideIn } from '@/components/ui/SlideIn'
 import { SpeakerForm } from '@/components/SpeakerForm'
 import { SpeakerChat } from '@/components/SpeakerChat'
 
@@ -125,73 +124,68 @@ export default function SpeakersPage() {
       {/* ─── WHO WE ARE LOOKING FOR ─── */}
       <section className="px-6 py-14 md:py-20">
         <div className="max-w-3xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-            <SlideIn direction="left">
-              <h2 className="font-display text-xl font-bold text-navy mb-4">
-                Who we are looking for
-              </h2>
-              <p className="text-text-muted leading-relaxed mb-4">
-                Professionals whose work has been shaped by AI in some meaningful way. Technical
-                expertise is valuable, and so is a perspective from someone whose role had little to
-                do with technology until recently.
-              </p>
-              <p className="text-text-muted leading-relaxed">
-                What matters most is that you can communicate your experience in a way that a
-                student with no background in your field could follow.
-              </p>
-            </SlideIn>
+          <FadeIn>
+            <h2 className="font-display text-xl font-bold text-navy mb-4">
+              Who we are looking for
+            </h2>
+            <p className="text-text-muted leading-relaxed mb-4">
+              Professionals whose work has been shaped by AI in some meaningful way. Technical
+              expertise is valuable, and so is a perspective from someone whose role had little to
+              do with technology until recently. What matters most is that you can communicate your
+              experience in a way that a student with no background in your field could follow.
+            </p>
+          </FadeIn>
 
-            <SlideIn direction="right">
-              <div className="space-y-4">
-                {/* What we ask */}
-                <div className="bg-white rounded-xl p-6 border border-border">
-                  <div className="flex items-center gap-2 mb-4">
-                    <CheckCircle2 size={18} className="text-beaver-blue" />
-                    <p className="font-display text-navy font-semibold text-sm">What we ask</p>
-                  </div>
-                  <ul className="space-y-3">
-                    <li className="text-text-muted text-sm flex items-start gap-2.5">
-                      <span className="w-1.5 h-1.5 rounded-full bg-beaver-blue/30 mt-1.5 shrink-0" />
-                      30 to 45 minutes of your time, including Q&A
-                    </li>
-                    <li className="text-text-muted text-sm flex items-start gap-2.5">
-                      <span className="w-1.5 h-1.5 rounded-full bg-beaver-blue/30 mt-1.5 shrink-0" />
-                      Zoom or in person at Penn State University Park, whichever works best for your
-                      schedule
-                    </li>
-                    <li className="text-text-muted text-sm flex items-start gap-2.5">
-                      <span className="w-1.5 h-1.5 rounded-full bg-beaver-blue/30 mt-1.5 shrink-0" />
-                      A brief description of what you would like to discuss, so we can share it with
-                      our members ahead of time
-                    </li>
-                  </ul>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
+            <FadeIn delay={0.1}>
+              <div className="bg-white rounded-xl p-6 border border-border h-full">
+                <div className="flex items-center gap-2 mb-4">
+                  <CheckCircle2 size={18} className="text-beaver-blue" />
+                  <p className="font-display text-navy font-semibold text-sm">What we ask</p>
                 </div>
-
-                {/* What you get */}
-                <div className="bg-white rounded-xl p-6 border border-border">
-                  <div className="flex items-center gap-2 mb-4">
-                    <Gift size={18} className="text-beaver-blue" />
-                    <p className="font-display text-navy font-semibold text-sm">What you get</p>
-                  </div>
-                  <ul className="space-y-3">
-                    <li className="text-text-muted text-sm flex items-start gap-2.5">
-                      <span className="w-1.5 h-1.5 rounded-full bg-beaver-blue/30 mt-1.5 shrink-0" />
-                      An engaged audience of students who are actively learning AI and show up
-                      because they want to be there
-                    </li>
-                    <li className="text-text-muted text-sm flex items-start gap-2.5">
-                      <span className="w-1.5 h-1.5 rounded-full bg-beaver-blue/30 mt-1.5 shrink-0" />
-                      A recorded copy of your session, if you would like one for your own use
-                    </li>
-                    <li className="text-text-muted text-sm flex items-start gap-2.5">
-                      <span className="w-1.5 h-1.5 rounded-full bg-beaver-blue/30 mt-1.5 shrink-0" />
-                      A lasting connection to a student community that will remember the people who
-                      invested in them early
-                    </li>
-                  </ul>
-                </div>
+                <ul className="space-y-3">
+                  <li className="text-text-muted text-sm flex items-start gap-2.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-beaver-blue/30 mt-1.5 shrink-0" />
+                    30 to 45 minutes of your time, including Q&A
+                  </li>
+                  <li className="text-text-muted text-sm flex items-start gap-2.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-beaver-blue/30 mt-1.5 shrink-0" />
+                    Zoom or in person at Penn State University Park, whichever works best for your
+                    schedule
+                  </li>
+                  <li className="text-text-muted text-sm flex items-start gap-2.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-beaver-blue/30 mt-1.5 shrink-0" />A
+                    brief description of what you would like to discuss, so we can share it with our
+                    members ahead of time
+                  </li>
+                </ul>
               </div>
-            </SlideIn>
+            </FadeIn>
+
+            <FadeIn delay={0.2}>
+              <div className="bg-white rounded-xl p-6 border border-border h-full">
+                <div className="flex items-center gap-2 mb-4">
+                  <Gift size={18} className="text-beaver-blue" />
+                  <p className="font-display text-navy font-semibold text-sm">What you get</p>
+                </div>
+                <ul className="space-y-3">
+                  <li className="text-text-muted text-sm flex items-start gap-2.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-beaver-blue/30 mt-1.5 shrink-0" />
+                    An engaged audience of students who are actively learning AI and show up because
+                    they want to be there
+                  </li>
+                  <li className="text-text-muted text-sm flex items-start gap-2.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-beaver-blue/30 mt-1.5 shrink-0" />A
+                    recorded copy of your session, if you would like one for your own use
+                  </li>
+                  <li className="text-text-muted text-sm flex items-start gap-2.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-beaver-blue/30 mt-1.5 shrink-0" />A
+                    lasting connection to a student community that will remember the people who
+                    invested in them early
+                  </li>
+                </ul>
+              </div>
+            </FadeIn>
           </div>
         </div>
       </section>
