@@ -114,7 +114,10 @@ export function ChatPanel({
 
   return (
     <LazyMotion features={domAnimation}>
-      <div id="chatPanel" className="flex flex-col h-full border-r border-border">
+      <div
+        id="chatPanel"
+        className="flex flex-col h-full border-r border-border w-1/2 flex-shrink-0"
+      >
         {/* Messages area */}
         <div className="flex-1 overflow-y-auto p-8 flex flex-col gap-5">
           {isFirstVisit && (

@@ -148,154 +148,237 @@ function getInitials(name: string): string {
     .toUpperCase()
 }
 
+type RepoView = 'home' | 'members' | 'documents' | 'files'
+
+function RepoMapHome({ onNavigate }: { onNavigate: (view: RepoView) => void }) {
+  return (
+    <div className="flex flex-col gap-4 h-full justify-center">
+      <h3 className="font-display text-lg text-navy text-center mb-2">Repo Map</h3>
+      <button
+        onClick={() => onNavigate('members')}
+        className="bg-white border border-border rounded-xl p-5 text-left hover:border-beaver-blue transition-colors"
+      >
+        <div className="flex items-center justify-between">
+          <div>
+            <h4 className="text-sm font-bold text-navy">Active Members</h4>
+            <p className="text-[11px] text-text-muted mt-1">
+              {agents.length} contributors to the website
+            </p>
+          </div>
+          <span className="text-text-muted text-lg">&rsaquo;</span>
+        </div>
+      </button>
+      <button
+        onClick={() => onNavigate('documents')}
+        className="bg-white border border-border rounded-xl p-5 text-left hover:border-beaver-blue transition-colors"
+      >
+        <div className="flex items-center justify-between">
+          <div>
+            <h4 className="text-sm font-bold text-navy">Club Documents</h4>
+            <p className="text-[11px] text-text-muted mt-1">
+              Mission, speakers, voice, brand — drag to chat
+            </p>
+          </div>
+          <span className="text-text-muted text-lg">&rsaquo;</span>
+        </div>
+      </button>
+      <button
+        onClick={() => onNavigate('files')}
+        className="bg-white border border-border rounded-xl p-5 text-left hover:border-beaver-blue transition-colors"
+      >
+        <div className="flex items-center justify-between">
+          <div>
+            <h4 className="text-sm font-bold text-navy">Project Files</h4>
+            <p className="text-[11px] text-text-muted mt-1">
+              What you can edit, pages, and infrastructure
+            </p>
+          </div>
+          <span className="text-text-muted text-lg">&rsaquo;</span>
+        </div>
+      </button>
+    </div>
+  )
+}
+
+function BackButton({ onClick }: { onClick: () => void }) {
+  return (
+    <button
+      onClick={onClick}
+      className="text-xs text-beaver-blue hover:text-navy transition-colors mb-4 flex items-center gap-1"
+    >
+      &lsaquo; Back
+    </button>
+  )
+}
+
+function MembersView({ onBack }: { onBack: () => void }) {
+  return (
+    <div className="h-full flex flex-col">
+      <BackButton onClick={onBack} />
+      <h3 className="font-display text-base text-navy mb-0.5">
+        Active Members <span className="text-pugh-blue font-normal text-sm">({agents.length})</span>
+      </h3>
+      <p className="text-[11px] text-text-muted mb-3">Everyone who contributes to the website</p>
+      <div className="grid grid-cols-2 gap-3">
+        {agents.map((agent) => (
+          <div
+            key={agent.email}
+            className="bg-white border border-border rounded-lg px-3 py-2.5 flex items-center gap-2.5"
+          >
+            <div className="w-8 h-8 rounded-full bg-navy flex items-center justify-center flex-shrink-0">
+              <span className="text-white text-[11px] font-semibold">
+                {getInitials(agent.name)}
+              </span>
+            </div>
+            <div className="min-w-0">
+              <div className="flex items-center gap-1.5">
+                <span className="text-sm font-bold text-navy leading-tight truncate">
+                  {agent.name}
+                </span>
+                <span className="w-1.5 h-1.5 rounded-full bg-green-500 flex-shrink-0" />
+              </div>
+              <span className="text-xs text-text-muted">{agent.role}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function DocumentsView({ onBack }: { onBack: () => void }) {
+  return (
+    <div className="h-full flex flex-col">
+      <BackButton onClick={onBack} />
+      <h3 className="font-display text-base text-navy mb-4">Club Documents</h3>
+      <div className="grid grid-cols-2 gap-3">
+        {artifacts.map((a) => (
+          <ArtifactCard key={a.id} artifact={a} />
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function FilesView({ onBack }: { onBack: () => void }) {
+  return (
+    <div className="h-full flex flex-col">
+      <BackButton onClick={onBack} />
+      <h3 className="font-display text-base text-navy mb-4">Project Files</h3>
+      <div className="flex flex-col gap-3">
+        <CollapsibleSection
+          title={
+            <>
+              You Edit These (
+              <ExplainTip
+                term="data files"
+                tip="These are simple lists that hold all the content on the site. You don't write code -- the agent edits these for you."
+              />
+              )
+            </>
+          }
+          colorClasses="bg-green-100 text-green-800"
+        >
+          <div className="px-3.5 py-1.5 pl-8 text-[11px] text-text-muted border-t border-border font-mono">
+            src/data/agents.ts -{' '}
+            <ExplainTip
+              term="agent list"
+              tip="Every club member who contributes gets an agent profile here. It tracks who you are, your role, and your work in the repo."
+            />
+          </div>
+          <div className="px-3.5 py-1.5 pl-8 text-[11px] text-text-muted border-t border-border font-mono">
+            src/data/tools.ts -{' '}
+            <ExplainTip
+              term="AI tools list"
+              tip="The list of AI tools shown on the Explore page. Each entry has a name, description, category, and link."
+            />
+          </div>
+          <div className="px-3.5 py-1.5 pl-8 text-[11px] text-text-muted border-t border-border font-mono">
+            src/data/pillars.ts -{' '}
+            <ExplainTip
+              term="club programs"
+              tip="The three pillars of the club: Events, Labs, and Explore AI. These rarely change."
+            />
+          </div>
+        </CollapsibleSection>
+
+        <CollapsibleSection
+          title={
+            <>
+              Pages (
+              <ExplainTip
+                term="admin only"
+                tip="Only Andy and Ryan can edit page layouts. Regular contributors add content through the agent list and tools list."
+              />
+              )
+            </>
+          }
+          colorClasses="bg-blue-100 text-blue-800"
+        >
+          <div className="px-3.5 py-1.5 pl-8 text-[11px] text-text-muted border-t border-border font-mono">
+            src/app/page.tsx - home
+          </div>
+          <div className="px-3.5 py-1.5 pl-8 text-[11px] text-text-muted border-t border-border font-mono">
+            src/app/about/ - about us
+          </div>
+          <div className="px-3.5 py-1.5 pl-8 text-[11px] text-text-muted border-t border-border font-mono">
+            src/app/explore/ - AI tools
+          </div>
+          <div className="px-3.5 py-1.5 pl-8 text-[11px] text-text-muted border-t border-border font-mono">
+            src/app/agents/ - agent directory
+          </div>
+        </CollapsibleSection>
+
+        <CollapsibleSection
+          title={
+            <>
+              Don&apos;t Touch (
+              <ExplainTip
+                term="infrastructure"
+                tip="These files control how the site is built, tested, and deployed. Changing them can break things. Leave them alone."
+              />
+              )
+            </>
+          }
+          colorClasses="bg-surface text-text-muted"
+        >
+          <div className="px-3.5 py-1.5 pl-8 text-[11px] text-text-muted border-t border-border font-mono">
+            brand/ -{' '}
+            <ExplainTip
+              term="Penn State brand assets"
+              tip="Official Penn State colors, fonts, and design rules. The site must follow these -- it's a student org requirement."
+            />
+          </div>
+          <div className="px-3.5 py-1.5 pl-8 text-[11px] text-text-muted border-t border-border font-mono">
+            content/ -{' '}
+            <ExplainTip
+              term="voice and writing rules"
+              tip="Rules for how we write: no hype words, no em dashes, describe what exists. The agent enforces these automatically."
+            />
+          </div>
+          <div className="px-3.5 py-1.5 pl-8 text-[11px] text-text-muted border-t border-border font-mono">
+            .github/ -{' '}
+            <ExplainTip
+              term="CI/CD pipelines"
+              tip="Automated checks that run when you submit changes. They test the code, check formatting, and deploy the site. You never need to touch these."
+            />
+          </div>
+        </CollapsibleSection>
+      </div>
+    </div>
+  )
+}
+
 function RepoMap() {
+  const [view, setView] = useState<RepoView>('home')
+
   return (
     <LazyMotion features={domAnimation}>
-      <div className="w-full h-full bg-white rounded-lg border border-border p-6 overflow-y-auto">
-        {/* Active Members */}
-        <div className="mb-6">
-          <h3 className="font-display text-base text-navy mb-0.5">
-            Active Members{' '}
-            <span className="text-pugh-blue font-normal text-sm">({agents.length})</span>
-          </h3>
-          <p className="text-[11px] text-text-muted mb-3">
-            Everyone who contributes to the website
-          </p>
-          <div className="grid grid-cols-2 gap-3">
-            {agents.map((agent) => (
-              <div
-                key={agent.email}
-                className="bg-white border border-border rounded-lg px-3 py-2.5 flex items-center gap-2.5"
-              >
-                <div className="w-8 h-8 rounded-full bg-navy flex items-center justify-center flex-shrink-0">
-                  <span className="text-white text-[11px] font-semibold">
-                    {getInitials(agent.name)}
-                  </span>
-                </div>
-                <div className="min-w-0">
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-sm font-bold text-navy leading-tight truncate">
-                      {agent.name}
-                    </span>
-                    <span className="w-1.5 h-1.5 rounded-full bg-green-500 flex-shrink-0" />
-                  </div>
-                  <span className="text-xs text-text-muted">{agent.role}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Club Documents - Artifact Cards */}
-        <h3 className="font-display text-base text-navy mb-4">Club Documents</h3>
-        <div className="grid grid-cols-2 gap-3 mb-6">
-          {artifacts.map((a) => (
-            <ArtifactCard key={a.id} artifact={a} />
-          ))}
-        </div>
-
-        {/* Project Files - Collapsible sections */}
-        <h3 className="font-display text-base text-navy mb-4">Project Files</h3>
-        <div className="flex flex-col gap-3">
-          <CollapsibleSection
-            title={
-              <>
-                You Edit These (
-                <ExplainTip
-                  term="data files"
-                  tip="These are simple lists that hold all the content on the site. You don't write code -- the agent edits these for you."
-                />
-                )
-              </>
-            }
-            colorClasses="bg-green-100 text-green-800"
-          >
-            <div className="px-3.5 py-1.5 pl-8 text-[11px] text-text-muted border-t border-border font-mono">
-              src/data/agents.ts -{' '}
-              <ExplainTip
-                term="agent list"
-                tip="Every club member who contributes gets an agent profile here. It tracks who you are, your role, and your work in the repo."
-              />
-            </div>
-            <div className="px-3.5 py-1.5 pl-8 text-[11px] text-text-muted border-t border-border font-mono">
-              src/data/tools.ts -{' '}
-              <ExplainTip
-                term="AI tools list"
-                tip="The list of AI tools shown on the Explore page. Each entry has a name, description, category, and link."
-              />
-            </div>
-            <div className="px-3.5 py-1.5 pl-8 text-[11px] text-text-muted border-t border-border font-mono">
-              src/data/pillars.ts -{' '}
-              <ExplainTip
-                term="club programs"
-                tip="The three pillars of the club: Events, Labs, and Explore AI. These rarely change."
-              />
-            </div>
-          </CollapsibleSection>
-
-          <CollapsibleSection
-            title={
-              <>
-                Pages (
-                <ExplainTip
-                  term="admin only"
-                  tip="Only Andy and Ryan can edit page layouts. Regular contributors add content through the agent list and tools list."
-                />
-                )
-              </>
-            }
-            colorClasses="bg-blue-100 text-blue-800"
-          >
-            <div className="px-3.5 py-1.5 pl-8 text-[11px] text-text-muted border-t border-border font-mono">
-              src/app/page.tsx - home
-            </div>
-            <div className="px-3.5 py-1.5 pl-8 text-[11px] text-text-muted border-t border-border font-mono">
-              src/app/about/ - about us
-            </div>
-            <div className="px-3.5 py-1.5 pl-8 text-[11px] text-text-muted border-t border-border font-mono">
-              src/app/explore/ - AI tools
-            </div>
-            <div className="px-3.5 py-1.5 pl-8 text-[11px] text-text-muted border-t border-border font-mono">
-              src/app/agents/ - agent directory
-            </div>
-          </CollapsibleSection>
-
-          <CollapsibleSection
-            title={
-              <>
-                Don&apos;t Touch (
-                <ExplainTip
-                  term="infrastructure"
-                  tip="These files control how the site is built, tested, and deployed. Changing them can break things. Leave them alone."
-                />
-                )
-              </>
-            }
-            colorClasses="bg-surface text-text-muted"
-          >
-            <div className="px-3.5 py-1.5 pl-8 text-[11px] text-text-muted border-t border-border font-mono">
-              brand/ -{' '}
-              <ExplainTip
-                term="Penn State brand assets"
-                tip="Official Penn State colors, fonts, and design rules. The site must follow these -- it's a student org requirement."
-              />
-            </div>
-            <div className="px-3.5 py-1.5 pl-8 text-[11px] text-text-muted border-t border-border font-mono">
-              content/ -{' '}
-              <ExplainTip
-                term="voice and writing rules"
-                tip="Rules for how we write: no hype words, no em dashes, describe what exists. The agent enforces these automatically."
-              />
-            </div>
-            <div className="px-3.5 py-1.5 pl-8 text-[11px] text-text-muted border-t border-border font-mono">
-              .github/ -{' '}
-              <ExplainTip
-                term="CI/CD pipelines"
-                tip="Automated checks that run when you submit changes. They test the code, check formatting, and deploy the site. You never need to touch these."
-              />
-            </div>
-          </CollapsibleSection>
-        </div>
+      <div className="w-full h-full bg-white rounded-lg border border-border p-6">
+        {view === 'home' && <RepoMapHome onNavigate={setView} />}
+        {view === 'members' && <MembersView onBack={() => setView('home')} />}
+        {view === 'documents' && <DocumentsView onBack={() => setView('home')} />}
+        {view === 'files' && <FilesView onBack={() => setView('home')} />}
       </div>
     </LazyMotion>
   )
@@ -332,7 +415,7 @@ export function PreviewPanel() {
   const [activeTab, setActiveTab] = useState<Tab>('preview')
 
   return (
-    <div id="previewPanel" className="flex-1 flex flex-col bg-surface relative z-5 min-h-0">
+    <div id="previewPanel" className="w-1/2 flex flex-col bg-surface relative z-5 min-h-0">
       {/* Tabs */}
       <div id="previewTabs" className="flex border-b border-border bg-white">
         {tabs.map((tab) => (
