@@ -54,7 +54,7 @@ jobs:
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
 
       - name: Upload build output
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v4
         with:
           name: build-output
           path: |
@@ -86,7 +86,7 @@ jobs:
         run: npm ci
 
       - name: Download build output
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v4
         with:
           name: build-output
 
@@ -109,7 +109,7 @@ jobs:
 
       - name: Upload Playwright report (on failure)
         if: failure()
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v4
         with:
           name: playwright-report-shard-${{ matrix.shard }}
           path: |
