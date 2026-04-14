@@ -1,16 +1,9 @@
 import { NextRequest } from 'next/server'
-import OpenAI from 'openai'
-
-const openai = process.env.KIMI_API_KEY
-  ? new OpenAI({
-      apiKey: process.env.KIMI_API_KEY,
-      baseURL: 'https://api.moonshot.ai/v1',
-    })
-  : process.env.OPENAI_API_KEY
-    ? new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
-    : null
 
 const MAX_HISTORY = 12
+const MODEL = 'claude-haiku-4-5-20251001'
+const ANTHROPIC_URL = 'https://api.anthropic.com/v1/messages'
+const ANTHROPIC_VERSION = '2023-06-01'
 
 const SYSTEM_PROMPT = `You are the AI assistant for the Applied AI Club at Penn State. You help students, faculty, and prospective speakers learn about the club. You were built by the club's programming team.
 
@@ -113,98 +106,167 @@ GroupMe: https://groupme.com/join_group/111640691/x4UBh7SL
 - This is a student-run organization and does not represent official Penn State positions
 - The website and all digital infrastructure were built by club members using AI tools`
 
+type ChatMessage = { role: 'user' | 'assistant'; content: string }
+
+async function anthropic(body: unknown, apiKey: string): Promise<Response> {
+  return fetch(ANTHROPIC_URL, {
+    method: 'POST',
+    headers: {
+      'x-api-key': apiKey,
+      'anthropic-version': ANTHROPIC_VERSION,
+      'content-type': 'application/json',
+    },
+    body: JSON.stringify(body),
+  })
+}
+
+async function generateSuggestions(
+  apiKey: string,
+  lastUserMsg: string,
+  assistantReply: string
+): Promise<string[]> {
+  const res = await anthropic(
+    {
+      model: MODEL,
+      max_tokens: 120,
+      temperature: 0.5,
+      system:
+        'Given a conversation about speaking at a student AI club, suggest exactly 2 short follow-up questions the user might ask next. Return ONLY a JSON array of 2 strings, nothing else. Keep each under 8 words.',
+      messages: [
+        {
+          role: 'user',
+          content: `User asked: "${lastUserMsg}"\nAssistant answered: "${assistantReply}"`,
+        },
+      ],
+    },
+    apiKey
+  )
+  if (!res.ok) throw new Error(`suggestions ${res.status}: ${await res.text()}`)
+  const data = (await res.json()) as { content?: { type: string; text?: string }[] }
+  const text = data.content?.find((b) => b.type === 'text')?.text ?? '[]'
+  const match = text.match(/\[[\s\S]*\]/)
+  const parsed = JSON.parse(match ? match[0] : text) as unknown
+  if (!Array.isArray(parsed)) return []
+  return parsed.filter((s): s is string => typeof s === 'string').slice(0, 2)
+}
+
 export async function POST(req: NextRequest) {
-  if (!openai) {
+  const apiKey = process.env.ANTHROPIC_API_KEY
+  if (!apiKey) {
+    console.error('Chat API: ANTHROPIC_API_KEY not set')
     return Response.json({ error: 'Not configured' }, { status: 503 })
   }
 
+  let messages: ChatMessage[]
   try {
-    const { messages } = await req.json()
+    const body = (await req.json()) as { messages?: ChatMessage[] }
+    messages = body.messages ?? []
+  } catch {
+    return new Response('Invalid JSON.', { status: 400 })
+  }
 
-    if (!messages || !Array.isArray(messages) || messages.length === 0) {
-      return new Response('Please send a message.', { status: 400 })
-    }
+  if (!Array.isArray(messages) || messages.length === 0) {
+    return new Response('Please send a message.', { status: 400 })
+  }
 
-    const recentMessages = messages.slice(-MAX_HISTORY)
+  const recentMessages = messages.slice(-MAX_HISTORY).map((m) => ({
+    role: m.role === 'assistant' ? ('assistant' as const) : ('user' as const),
+    content: String(m.content ?? ''),
+  }))
+  const lastUserMsg = recentMessages[recentMessages.length - 1]?.content ?? ''
 
-    const stream = await openai.chat.completions.create({
-      model: process.env.KIMI_API_KEY ? 'moonshot-v1-8k' : 'gpt-4o-mini',
-      temperature: 0.3,
+  const upstream = await anthropic(
+    {
+      model: MODEL,
       max_tokens: 300,
+      temperature: 0.3,
+      system: SYSTEM_PROMPT,
       stream: true,
-      messages: [
-        { role: 'system', content: SYSTEM_PROMPT },
-        ...recentMessages.map((m: { role: string; content: string }) => ({
-          role: m.role as 'user' | 'assistant',
-          content: m.content,
-        })),
-      ],
-    })
+      messages: recentMessages,
+    },
+    apiKey
+  )
 
-    const encoder = new TextEncoder()
-    let fullResponse = ''
-    const readable = new ReadableStream({
-      async start(controller) {
-        for await (const chunk of stream) {
-          const text = chunk.choices[0]?.delta?.content
-          if (text) {
-            fullResponse += text
-            controller.enqueue(
-              encoder.encode(`data: ${JSON.stringify({ type: 'text', text })}\n\n`)
-            )
-          }
-        }
-
-        // Generate contextual follow-up suggestions
-        const followUp = await openai.chat.completions.create({
-          model: process.env.KIMI_API_KEY ? 'moonshot-v1-8k' : 'gpt-4o-mini',
-          temperature: 0.5,
-          max_tokens: 80,
-          messages: [
-            {
-              role: 'system',
-              content:
-                'Given this conversation about speaking at a student AI club, suggest 2 short follow-up questions the user might ask next. Return ONLY a JSON array of 2 strings, nothing else. Keep each under 8 words.',
-            },
-            {
-              role: 'user',
-              content: `User asked: "${recentMessages[recentMessages.length - 1].content}"\nAssistant answered: "${fullResponse}"`,
-            },
-          ],
-        })
-
-        try {
-          const suggestions = JSON.parse(followUp.choices[0]?.message?.content || '[]')
-          if (Array.isArray(suggestions) && suggestions.length > 0) {
-            controller.enqueue(
-              encoder.encode(
-                `data: ${JSON.stringify({ type: 'suggestions', suggestions: suggestions.slice(0, 2) })}\n\n`
-              )
-            )
-          }
-        } catch {
-          // skip if parsing fails
-        }
-
-        controller.enqueue(encoder.encode(`data: ${JSON.stringify({ type: 'done' })}\n\n`))
-        controller.close()
-      },
-    })
-
-    return new Response(readable, {
-      headers: {
-        'Content-Type': 'text/event-stream',
-        'Cache-Control': 'no-cache',
-        Connection: 'keep-alive',
-      },
-    })
-  } catch (error) {
-    console.error('Chat API error:', error)
+  if (!upstream.ok || !upstream.body) {
+    const errText = await upstream.text().catch(() => '')
+    console.error('Chat API upstream error:', upstream.status, errText)
     return new Response(
       JSON.stringify({
         message: 'Something went wrong. Please try again or email appliedaipsu@gmail.com.',
       }),
-      { status: 500, headers: { 'Content-Type': 'application/json' } }
+      { status: 502, headers: { 'Content-Type': 'application/json' } }
     )
   }
+
+  const encoder = new TextEncoder()
+  const decoder = new TextDecoder()
+  const reader = upstream.body.getReader()
+
+  const readable = new ReadableStream({
+    async start(controller) {
+      const emit = (obj: unknown) =>
+        controller.enqueue(encoder.encode(`data: ${JSON.stringify(obj)}\n\n`))
+
+      let fullResponse = ''
+      let buffer = ''
+
+      try {
+        while (true) {
+          const { done, value } = await reader.read()
+          if (done) break
+          buffer += decoder.decode(value, { stream: true })
+
+          let idx: number
+          while ((idx = buffer.indexOf('\n\n')) !== -1) {
+            const event = buffer.slice(0, idx)
+            buffer = buffer.slice(idx + 2)
+            for (const line of event.split('\n')) {
+              if (!line.startsWith('data: ')) continue
+              const payload = line.slice(6).trim()
+              if (!payload) continue
+              try {
+                const parsed = JSON.parse(payload) as {
+                  type?: string
+                  delta?: { type?: string; text?: string }
+                }
+                if (
+                  parsed.type === 'content_block_delta' &&
+                  parsed.delta?.type === 'text_delta' &&
+                  parsed.delta.text
+                ) {
+                  fullResponse += parsed.delta.text
+                  emit({ type: 'text', text: parsed.delta.text })
+                }
+              } catch {
+                // ignore malformed SSE frames
+              }
+            }
+          }
+        }
+      } catch (err) {
+        console.error('Chat API stream read error:', err)
+      }
+
+      if (fullResponse.trim()) {
+        try {
+          const suggestions = await generateSuggestions(apiKey, lastUserMsg, fullResponse)
+          if (suggestions.length > 0) emit({ type: 'suggestions', suggestions })
+        } catch (err) {
+          console.error('Chat API suggestions error:', err)
+        }
+      }
+
+      emit({ type: 'done' })
+      controller.close()
+    },
+  })
+
+  return new Response(readable, {
+    headers: {
+      'Content-Type': 'text/event-stream',
+      'Cache-Control': 'no-cache, no-transform',
+      Connection: 'keep-alive',
+      'X-Accel-Buffering': 'no',
+    },
+  })
 }
